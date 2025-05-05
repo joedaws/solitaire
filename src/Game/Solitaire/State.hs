@@ -1,15 +1,15 @@
 -- | types and functions for the solitaire (also know as Klondike game)
-module Game.Solitaire.State
-  ( Solitaire(..)
-  , Foundations(..)
-  , Tableau(..)
-  , BuildPile
-  , SuitPile
-  , Waste
-  , Stock
-  , setupSolitaire
-  , setupFoundations
-  ) where
+module Game.Solitaire.State (
+    Solitaire (..),
+    Foundations (..),
+    Tableau (..),
+    BuildPile,
+    SuitPile,
+    Waste,
+    Stock,
+    setupSolitaire,
+    setupFoundations,
+) where
 
 import Game.Components.State
 
@@ -25,22 +25,23 @@ type Stock = [Card]
 
 -- There are four foundations, one for each suit
 data Foundations = Foundations
-  { heartsPile :: SuitPile,
-  diamondsPile :: SuitPile,
-  clubsPile :: SuitPile,
-  spadesPile :: SuitPile
-} deriving (Show)
+    { heartsPile :: SuitPile
+    , diamondsPile :: SuitPile
+    , clubsPile :: SuitPile
+    , spadesPile :: SuitPile
+    }
+    deriving (Show)
 
-
-data Tableau = Tableau {
-  one   :: BuildPile,
-  two   :: BuildPile,
-  three :: BuildPile,
-  four  :: BuildPile,
-  five  :: BuildPile,
-  six   :: BuildPile,
-  seven :: BuildPile
-} deriving (Show)
+data Tableau = Tableau
+    { one :: BuildPile
+    , two :: BuildPile
+    , three :: BuildPile
+    , four :: BuildPile
+    , five :: BuildPile
+    , six :: BuildPile
+    , seven :: BuildPile
+    }
+    deriving (Show)
 
 -- There are seven Build piles in the Tableau
 -- Each pile is labeled 1 through 7
@@ -48,11 +49,11 @@ data Tableau = Tableau {
 
 -- The full game state
 data Solitaire = Solitaire
-  { stock :: Stock
-  , waste :: Waste
-  , foundations :: Foundations
-  , tableau :: Tableau
-  }
+    { stock :: Stock
+    , waste :: Waste
+    , foundations :: Foundations
+    , tableau :: Tableau
+    }
 
 setupFoundations :: Foundations
 setupFoundations = Foundations hp dp cp sp
@@ -67,7 +68,7 @@ setupFoundations = Foundations hp dp cp sp
 dealTableaus :: Deck -> Int -> Int -> [BuildPile] -> ([BuildPile], Stock)
 dealTableaus deck _ 0 acc = (reverse acc, deck)
 dealTableaus deck n count acc =
-  dealTableaus rest (n + 1) (count - 1) (newPile : acc)
+    dealTableaus rest (n + 1) (count - 1) (newPile : acc)
   where
     (dealt, rest) = splitAt n deck
     newPile = dealt
@@ -75,12 +76,12 @@ dealTableaus deck n count acc =
 setupTableau :: [BuildPile] -> Tableau
 setupTableau bps = Tableau p1 p2 p3 p4 p5 p6 p7
   where
-    p1:rest1 = bps
-    p2:rest2 = rest1
-    p3:rest3 = rest2
-    p4:rest4 = rest3
-    p5:rest5 = rest4
-    p6:rest6 = rest5
+    p1 : rest1 = bps
+    p2 : rest2 = rest1
+    p3 : rest3 = rest2
+    p4 : rest4 = rest3
+    p5 : rest5 = rest4
+    p6 : rest6 = rest5
     p7 = head rest6
 
 -- Setup Solitaire game given a deck in a certain state
