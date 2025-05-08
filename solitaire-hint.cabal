@@ -1,15 +1,15 @@
 cabal-version: 2.2
 
--- This file has been generated from package.yaml by hpack version 0.36.0.
+-- This file has been generated from package.yaml by hpack version 0.37.0.
 --
 -- see: https://github.com/sol/hpack
 
-name:           solitool
+name:           solitaire-hint
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/joedaws/solitool#readme>
-homepage:       https://github.com/joedaws/solitool#readme
-bug-reports:    https://github.com/joedaws/solitool/issues
-author:         Joseph Daws Jr.
+description:    Please see the README on GitHub at <https://github.com/joedaws/solitaire-hint#readme>
+homepage:       https://github.com/joedaws/solitaire-hint#readme
+bug-reports:    https://github.com/joedaws/solitaire-hint/issues
+author:         Joseph D. Daws Jr.
 maintainer:     joed@hey.com
 copyright:      2024
 license:        BSD-3-Clause
@@ -21,7 +21,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/joedaws/solitool
+  location: https://github.com/joedaws/solitaire-hint
 
 library
   exposed-modules:
@@ -29,9 +29,9 @@ library
       Game.Solitaire.State
       Game.Solitaire.Transitions
   other-modules:
-      Paths_solitool
+      Paths_solitaire_hint
   autogen-modules:
-      Paths_solitool
+      Paths_solitaire_hint
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
@@ -42,12 +42,12 @@ library
     , random
   default-language: Haskell2010
 
-executable solitool-exe
+executable shint
   main-is: Main.hs
   other-modules:
-      Paths_solitool
+      Paths_solitaire_hint
   autogen-modules:
-      Paths_solitool
+      Paths_solitaire_hint
   hs-source-dirs:
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
@@ -56,16 +56,16 @@ executable solitool-exe
     , containers
     , hspec
     , random
-    , solitool
+    , solitaire-hint
   default-language: Haskell2010
 
-test-suite solitool-test
+test-suite solitaire-hint-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_solitool
+      Paths_solitaire_hint
   autogen-modules:
-      Paths_solitool
+      Paths_solitaire_hint
   hs-source-dirs:
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
@@ -74,5 +74,5 @@ test-suite solitool-test
     , containers
     , hspec
     , random
-    , solitool
+    , solitaire-hint
   default-language: Haskell2010

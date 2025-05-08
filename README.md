@@ -1,9 +1,33 @@
-# solitool
+# solitaire-hint
 
-- [ ] Build a function that generates a list of all possible next states given the current play state. Nondeterminism!
+A CLI for solitaire hints written in Haskell.
 
+# Game state
 
-# Repository structure
-The source code is contained in the `src` directory. Each file is a module. The 
-name of the module should reflect the purpose of the code and not necessarily 
-the structure of the code.
+``` txt 
+
+-C||**|**|**|**|**|**|AC
+-S||**|**|**|**|**|3H
+-H||**|**|**|**|4D
+-D||**|**|**|XH
+  ||**|**|3D
+**||**|5C
+**||9C
+
+```
+- `**` Represnets a card with hidden state
+- `-C` Represents an empty foundation for the club suit.
+
+## Suits
+- `C` club
+- `S` spade
+- `H` heart
+- `D` Diamond
+
+## Ranks
+The numberic ranks are just the number except 10.
+- `X` 10
+- `A` Ace
+- `J` Jack
+- `Q` Queen 
+- `K` King
