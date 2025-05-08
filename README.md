@@ -15,7 +15,7 @@ A CLI for solitaire hints written in Haskell.
 **||9C
 
 ```
-- `**` Represnets a card with hidden state
+- `**` Represents a card with hidden state
 - `-C` Represents an empty foundation for the club suit.
 
 ## Suits
@@ -25,7 +25,7 @@ A CLI for solitaire hints written in Haskell.
 - `D` Diamond
 
 ## Ranks
-The numberic ranks are just the number except 10.
+The numeric ranks are just the number except 10.
 - `X` 10
 - `A` Ace
 - `J` Jack
