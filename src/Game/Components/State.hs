@@ -18,7 +18,14 @@ data Suit
     | Diamonds
     | Clubs
     | Spades
-    deriving (Show, Enum, Bounded, Eq)
+    deriving (Enum, Bounded, Eq)
+
+instance Show Suit where
+    show s = case s of
+        Hearts -> "H"
+        Diamonds -> "D"
+        Clubs -> "C"
+        Spades -> "S"
 
 data Rank
     = EmptyRank
@@ -35,14 +42,34 @@ data Rank
     | Jack
     | Queen
     | King
-    deriving (Show, Enum, Bounded, Eq, Ord)
+    deriving (Enum, Bounded, Eq, Ord)
+
+instance Show Rank where
+    show r = case r of
+        EmptyRank -> "-"
+        Ace -> "A"
+        Two -> "2"
+        Three -> "3"
+        Four -> "4"
+        Five -> "5"
+        Six -> "6"
+        Seven -> "7"
+        Eight -> "8"
+        Nine -> "9"
+        Ten -> "X"
+        Jack -> "J"
+        Queen -> "Q"
+        King -> "K"
 
 -- Define a card as a combination of a rank and a suit
 data Card = Card
     { rank :: Rank
     , suit :: Suit
     }
-    deriving (Show, Eq)
+    deriving (Eq)
+
+instance Show Card where
+    show (Card r s) = show r ++ show s
 
 data Color = Red | Black deriving (Show, Eq)
 

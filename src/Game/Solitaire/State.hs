@@ -1,4 +1,5 @@
--- | types and functions for the solitaire (also know as Klondike game)
+{-# LANGUAGE OverloadedStrings #-}
+
 module Game.Solitaire.State (
     Solitaire (..),
     Foundations (..),
@@ -11,9 +12,12 @@ module Game.Solitaire.State (
     setupFoundations,
 ) where
 
+import Data.List (intercalate)
+
 import Game.Components.State
 
 -- Synonyms for different list of Cards
+-- head [Card] is the top of the stack of cards
 type Waste = [Card]
 
 type SuitPile = [Card]
@@ -54,6 +58,53 @@ data Solitaire = Solitaire
     , foundations :: Foundations
     , tableau :: Tableau
     }
+
+instance Show Solitaire where
+    show (Solitaire s [] f t) =
+        "stock: "
+            ++ show (length s)
+            ++ "\n"
+            ++ intercalate
+                "\n"
+                [ show (head $ heartsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ seven t)))
+                , show (head $ clubsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ six t)))
+                , show (head $ diamondsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ five t)))
+                , show (head $ spadesPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ four t)))                
+                ,"  ||" ++ show (intercalate "|" (map show (reverse $ three t)))
+                ,"--||" ++ show (intercalate "|" (map show (reverse $ two t)))                
+                , show (head s) ++ "||" ++ show (one t)                 
+                ]
+
+    show (Solitaire [] w f t) =
+        "stock: "
+            ++ "0"
+            ++ "\n"
+            ++ intercalate
+                "\n"
+                [ show (head $ heartsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ seven t)))
+                , show (head $ clubsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ six t)))
+                , show (head $ diamondsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ five t)))
+                , show (head $ spadesPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ four t)))                
+                , "  ||" ++ show (intercalate "|" (map show (reverse $ three t)))
+                , show (head w) ++ "||" ++ show (intercalate "|" (map show (reverse $ two t)))                
+                , "--||" ++ show (one t)                 
+                ]
+
+    show (Solitaire s w f t) =
+        "stock: "
+            ++ show (length s)
+            ++ "\n"
+            ++ intercalate
+                "\n"
+                [ show (head $ heartsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ seven t)))
+                , show (head $ clubsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ six t)))
+                , show (head $ diamondsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ five t)))
+                , show (head $ spadesPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ four t)))                
+                ,"  ||" ++ show (intercalate "|" (map show (reverse $ three t)))
+                , show (head w) ++ "||" ++ show (intercalate "|" (map show (reverse $ two t)))                
+                , show (head s) ++ "||" ++ show (one t)                 
+                ]
+
 
 setupFoundations :: Foundations
 setupFoundations = Foundations hp dp cp sp
