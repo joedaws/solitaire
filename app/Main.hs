@@ -7,4 +7,4 @@ main :: IO ()
 main = do
     shuffledDeck <- shuffleDeck createDeck
     let solitaire  = setupSolitaire shuffledDeck
-    print solitaire
+    render $ toStrList solitaire
