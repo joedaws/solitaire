@@ -101,41 +101,6 @@ toStrBuildPile :: BuildPile -> String
 toStrBuildPile [] = "--"
 toStrBuildPile bp = intercalate "|" (map show (reverse bp))
 
-instance Show Solitaire where
-    show (Solitaire s [] f t) =
-        intercalate "\n" [line0, line1, line2, line3, line4, line5, line6, line7]
-      where
-        line0 = "stock: " ++ show (length s)
-        line1 = show (head $ heartsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ seven t)))
-        line2 = show (head $ clubsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ six t)))
-        line3 = show (head $ diamondsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ five t)))
-        line4 = show (head $ spadesPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ four t)))
-        line5 = "  ||" ++ show (intercalate "|" (map show (reverse $ three t)))
-        line6 = "--||" ++ show (intercalate "|" (map show (reverse $ two t)))
-        line7 = show (head s) ++ "||" ++ show (one t)
-    show (Solitaire [] w f t) =
-        intercalate "\n" [line0, line1, line2, line3, line4, line5, line6, line7]
-      where
-        line0 = "stock: 0"
-        line1 = show (head $ heartsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ seven t)))
-        line2 = show (head $ clubsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ six t)))
-        line3 = show (head $ diamondsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ five t)))
-        line4 = show (head $ spadesPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ four t)))
-        line5 = "  ||" ++ show (intercalate "|" (map show (reverse $ three t)))
-        line6 = show (head w) ++ "||" ++ show (intercalate "|" (map show (reverse $ two t)))
-        line7 = "--||" ++ show (one t)
-    show (Solitaire s w f t) =
-        intercalate "\n" [line0, line1, line2, line3, line4, line5, line6, line7]
-      where
-        line0 = "stock: 0"
-        line1 = show (head $ heartsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ seven t)))
-        line2 = show (head $ clubsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ six t)))
-        line3 = show (head $ diamondsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ five t)))
-        line4 = show (head $ spadesPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ four t)))
-        line5 = "  ||" ++ show (intercalate "|" (map show (reverse $ three t)))
-        line6 = show (head w) ++ "||" ++ show (intercalate "|" (map show (reverse $ two t)))
-        line7 = show (head s) ++ "||" ++ show (one t)
-
 setupFoundations :: Foundations
 setupFoundations = Foundations hp dp cp sp
   where
@@ -177,3 +142,39 @@ setupSolitaire shuffledDeck = Solitaire rest [] initFoundations initTableau
     (tableaus, rest) = dealTableaus shuffledDeck 1 7 []
     initFoundations = setupFoundations
     initTableau = setupTableau tableaus
+
+-- still a work in progress
+instance Show Solitaire where
+    show (Solitaire s [] f t) =
+        intercalate "\n" [line0, line1, line2, line3, line4, line5, line6, line7]
+      where
+        line0 = "stock: " ++ show (length s)
+        line1 = show (head $ heartsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ seven t)))
+        line2 = show (head $ clubsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ six t)))
+        line3 = show (head $ diamondsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ five t)))
+        line4 = show (head $ spadesPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ four t)))
+        line5 = "  ||" ++ show (intercalate "|" (map show (reverse $ three t)))
+        line6 = "--||" ++ show (intercalate "|" (map show (reverse $ two t)))
+        line7 = show (head s) ++ "||" ++ show (one t)
+    show (Solitaire [] w f t) =
+        intercalate "\n" [line0, line1, line2, line3, line4, line5, line6, line7]
+      where
+        line0 = "stock: 0"
+        line1 = show (head $ heartsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ seven t)))
+        line2 = show (head $ clubsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ six t)))
+        line3 = show (head $ diamondsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ five t)))
+        line4 = show (head $ spadesPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ four t)))
+        line5 = "  ||" ++ show (intercalate "|" (map show (reverse $ three t)))
+        line6 = show (head w) ++ "||" ++ show (intercalate "|" (map show (reverse $ two t)))
+        line7 = "--||" ++ show (one t)
+    show (Solitaire s w f t) =
+        intercalate "\n" [line0, line1, line2, line3, line4, line5, line6, line7]
+      where
+        line0 = "stock: 0"
+        line1 = show (head $ heartsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ seven t)))
+        line2 = show (head $ clubsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ six t)))
+        line3 = show (head $ diamondsPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ five t)))
+        line4 = show (head $ spadesPile f) ++ "||" ++ show (intercalate "|" (map show (reverse $ four t)))
+        line5 = "  ||" ++ show (intercalate "|" (map show (reverse $ three t)))
+        line6 = show (head w) ++ "||" ++ show (intercalate "|" (map show (reverse $ two t)))
+        line7 = show (head s) ++ "||" ++ show (one t)
