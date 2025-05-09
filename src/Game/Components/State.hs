@@ -1,13 +1,17 @@
 -- | Module for defining data types for Cards
 module Game.Components.State (
+    CardState (..),
     Card (..),
     Suit (..),
     Rank (..),
+    DeckState,
     Deck,
     Color,
     color,
     createDeck,
+    createDeckState,
     shuffleDeck,
+    shuffleDeckState,
 ) where
 
 import Data.List (unfoldr)
@@ -71,6 +75,18 @@ data Card = Card
 instance Show Card where
     show (Card r s) = show r ++ show s
 
+data Face = Up | Down deriving (Show, Eq)
+
+data CardState = CardState
+    { card :: Card
+    , face :: Face
+    }
+    deriving (Eq)
+
+instance Show CardState where
+    show (CardState _ Down) = "**"
+    show (CardState c Up) = show c
+
 data Color = Red | Black deriving (Show, Eq)
 
 color :: Card -> Color
@@ -80,6 +96,7 @@ color (Card _ Clubs) = Black
 color (Card _ Spades) = Black
 
 type Deck = [Card]
+type DeckState = [CardState]
 
 -- Generate a standard deck of 52 cards in the cannonical order
 createDeck :: Deck
@@ -89,9 +106,18 @@ createDeck =
     , s <- [minBound .. maxBound]
     ]
 
+createDeckState :: DeckState
+createDeckState =
+    [CardState c Down | c <- createDeck]
+
 -- Shuffle the deck
 shuffleDeck :: Deck -> IO Deck
 shuffleDeck d = do
+    shuffle' d (length d) <$> newStdGen
+
+-- Shuffle the deck with CardState
+shuffleDeckState :: DeckState -> IO DeckState
+shuffleDeckState d = do
     shuffle' d (length d) <$> newStdGen
 
 -- Fisher-Yates shuffle algorithm
