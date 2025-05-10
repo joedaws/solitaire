@@ -16,13 +16,17 @@ setupFoundations = Foundations hp dp cp sp
 
 -- Deal cards into tableaus
 -- output is the list of tableaus and stock
-dealTableaus :: Deck c -> Int -> Int -> [BuildPile c] -> ([BuildPile c], Stock c)
+dealTableaus :: (HasFace c) => Deck c -> Int -> Int -> [BuildPile c] -> ([BuildPile c], Stock c)
 dealTableaus deck _ 0 acc = (reverse acc, deck)
 dealTableaus deck n count acc =
     dealTableaus rest (n + 1) (count - 1) (newPile : acc)
   where
     (dealt, rest) = splitAt n deck
-    newPile = dealt
+    newPile = flipTop dealt
+
+flipTop :: (HasFace c) => BuildPile c -> BuildPile c
+flipTop [] = []
+flipTop (x : xs) = flipCard x : xs
 
 setupTableau :: [BuildPile c] -> Tableau c
 setupTableau bps = Tableau p1 p2 p3 p4 p5 p6 p7
@@ -41,9 +45,10 @@ setupTableau bps = Tableau p1 p2 p3 p4 p5 p6 p7
 -- - an empty waste
 -- - seven piles in the tableau
 -- - four empty foundation piles
-setupSolitaire :: (Eq c, Show c) => Deck c -> Solitaire c
-setupSolitaire shuffledDeck = Solitaire rest [] initFoundations initTableau
+setupSolitaire :: (Eq c, HasFace c, Show c) => Deck c -> Solitaire c
+setupSolitaire shuffledDeck = Solitaire s [] initFoundations initTableau
   where
     (tableaus, rest) = dealTableaus shuffledDeck 1 7 []
+    s = flipTop rest
     initFoundations = setupFoundations
     initTableau = setupTableau tableaus

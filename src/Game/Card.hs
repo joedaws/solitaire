@@ -1,5 +1,6 @@
 module Game.Card (
     HasCard (..),
+    HasFace (..),
     Card (..),
     GameCard (..),
     Color,
@@ -7,7 +8,7 @@ module Game.Card (
     Rank (..),
     Suit (..),
     color,
-    filpGameCard,
+    flipGameCard,
     mkCard,
     mkGameCardDown,
     mkGameCardUp,
@@ -15,6 +16,10 @@ module Game.Card (
 
 class HasCard a where
     toCard :: a -> Card
+
+class HasFace a where
+    toFace :: a -> Face
+    flipCard :: a -> a
 
 data Suit
     = Hearts
@@ -90,6 +95,10 @@ instance Show GameCard where
 instance HasCard GameCard where
     toCard = card
 
+instance HasFace GameCard where
+    toFace = face
+    flipCard = flipGameCard
+
 data Color = Red | Black deriving (Show, Eq)
 
 color :: Card -> Color
@@ -107,6 +116,6 @@ mkGameCardDown r s = GameCard (Card r s) Down
 mkGameCardUp :: Rank -> Suit -> GameCard
 mkGameCardUp r s = GameCard (Card r s) Up
 
-filpGameCard :: GameCard -> GameCard
-filpGameCard (GameCard c Up) = GameCard c Down
-filpGameCard (GameCard c Down) = GameCard c Up
+flipGameCard :: GameCard -> GameCard
+flipGameCard (GameCard c Up) = GameCard c Down
+flipGameCard (GameCard c Down) = GameCard c Up
