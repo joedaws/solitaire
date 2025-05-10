@@ -1,5 +1,6 @@
 import Test.Hspec
-import Game.Components.State
+import Game.Card
+import Game.Deck
 import Game.Solitaire.State
 import Game.Solitaire.Transitions
 
@@ -13,7 +14,7 @@ main = hspec $ do
       let initFoundations = foundations s
       length initStock `shouldBe` 24
       head initStock `shouldBe` Card Eight Hearts
-      heartsPile initFoundations `shouldBe` [Card EmptyRank Hearts]
+      heartsPile initFoundations `shouldBe` []
       waste s `shouldBe` []
       let oneTableau = one $ tableau s
       oneTableau `shouldBe` [Card Ace Hearts]

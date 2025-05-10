@@ -14,107 +14,111 @@ module Game.Solitaire.Transitions (
     tableauToTableau,
 ) where
 
-import Game.Components.State
+import Game.Card
+import Game.Deck
 import Game.Solitaire.State
 
-canBuild :: Card -> Card -> Bool
-canBuild (Card Ace Hearts) (Card Two Clubs) = True
-canBuild (Card Ace Hearts) (Card Two Spades) = True
-canBuild (Card Ace Diamonds) (Card Two Clubs) = True
-canBuild (Card Ace Diamonds) (Card Two Spades) = True
-canBuild (Card Ace Clubs) (Card Two Diamonds) = True
-canBuild (Card Ace Clubs) (Card Two Hearts) = True
-canBuild (Card Ace Spades) (Card Two Diamonds) = True
-canBuild (Card Ace Spades) (Card Two Hearts) = True
-canBuild (Card Two Hearts) (Card Three Clubs) = True
-canBuild (Card Two Hearts) (Card Three Spades) = True
-canBuild (Card Two Diamonds) (Card Three Clubs) = True
-canBuild (Card Two Diamonds) (Card Three Spades) = True
-canBuild (Card Two Clubs) (Card Three Diamonds) = True
-canBuild (Card Two Clubs) (Card Three Hearts) = True
-canBuild (Card Two Spades) (Card Three Diamonds) = True
-canBuild (Card Two Spades) (Card Three Hearts) = True
-canBuild (Card Three Hearts) (Card Four Clubs) = True
-canBuild (Card Three Hearts) (Card Four Spades) = True
-canBuild (Card Three Diamonds) (Card Four Clubs) = True
-canBuild (Card Three Diamonds) (Card Four Spades) = True
-canBuild (Card Three Clubs) (Card Four Diamonds) = True
-canBuild (Card Three Clubs) (Card Four Hearts) = True
-canBuild (Card Three Spades) (Card Four Diamonds) = True
-canBuild (Card Three Spades) (Card Four Hearts) = True
-canBuild (Card Four Hearts) (Card Five Clubs) = True
-canBuild (Card Four Hearts) (Card Five Spades) = True
-canBuild (Card Four Diamonds) (Card Five Clubs) = True
-canBuild (Card Four Diamonds) (Card Five Spades) = True
-canBuild (Card Four Clubs) (Card Five Diamonds) = True
-canBuild (Card Four Clubs) (Card Five Hearts) = True
-canBuild (Card Four Spades) (Card Five Diamonds) = True
-canBuild (Card Four Spades) (Card Five Hearts) = True
-canBuild (Card Five Hearts) (Card Six Clubs) = True
-canBuild (Card Five Hearts) (Card Six Spades) = True
-canBuild (Card Five Diamonds) (Card Six Clubs) = True
-canBuild (Card Five Diamonds) (Card Six Spades) = True
-canBuild (Card Five Clubs) (Card Six Diamonds) = True
-canBuild (Card Five Clubs) (Card Six Hearts) = True
-canBuild (Card Five Spades) (Card Six Diamonds) = True
-canBuild (Card Five Spades) (Card Six Hearts) = True
-canBuild (Card Six Hearts) (Card Seven Clubs) = True
-canBuild (Card Six Hearts) (Card Seven Spades) = True
-canBuild (Card Six Diamonds) (Card Seven Clubs) = True
-canBuild (Card Six Diamonds) (Card Seven Spades) = True
-canBuild (Card Six Clubs) (Card Seven Diamonds) = True
-canBuild (Card Six Clubs) (Card Seven Hearts) = True
-canBuild (Card Six Spades) (Card Seven Diamonds) = True
-canBuild (Card Six Spades) (Card Seven Hearts) = True
-canBuild (Card Seven Hearts) (Card Eight Clubs) = True
-canBuild (Card Seven Hearts) (Card Eight Spades) = True
-canBuild (Card Seven Diamonds) (Card Eight Clubs) = True
-canBuild (Card Seven Diamonds) (Card Eight Spades) = True
-canBuild (Card Seven Clubs) (Card Eight Diamonds) = True
-canBuild (Card Seven Clubs) (Card Eight Hearts) = True
-canBuild (Card Seven Spades) (Card Eight Diamonds) = True
-canBuild (Card Seven Spades) (Card Eight Hearts) = True
-canBuild (Card Eight Hearts) (Card Nine Clubs) = True
-canBuild (Card Eight Hearts) (Card Nine Spades) = True
-canBuild (Card Eight Diamonds) (Card Nine Clubs) = True
-canBuild (Card Eight Diamonds) (Card Nine Spades) = True
-canBuild (Card Eight Clubs) (Card Nine Diamonds) = True
-canBuild (Card Eight Clubs) (Card Nine Hearts) = True
-canBuild (Card Eight Spades) (Card Nine Diamonds) = True
-canBuild (Card Eight Spades) (Card Nine Hearts) = True
-canBuild (Card Nine Hearts) (Card Ten Clubs) = True
-canBuild (Card Nine Hearts) (Card Ten Spades) = True
-canBuild (Card Nine Diamonds) (Card Ten Clubs) = True
-canBuild (Card Nine Diamonds) (Card Ten Spades) = True
-canBuild (Card Nine Clubs) (Card Ten Diamonds) = True
-canBuild (Card Nine Clubs) (Card Ten Hearts) = True
-canBuild (Card Nine Spades) (Card Ten Diamonds) = True
-canBuild (Card Nine Spades) (Card Ten Hearts) = True
-canBuild (Card Ten Hearts) (Card Jack Clubs) = True
-canBuild (Card Ten Hearts) (Card Jack Spades) = True
-canBuild (Card Ten Diamonds) (Card Jack Clubs) = True
-canBuild (Card Ten Diamonds) (Card Jack Spades) = True
-canBuild (Card Ten Clubs) (Card Jack Diamonds) = True
-canBuild (Card Ten Clubs) (Card Jack Hearts) = True
-canBuild (Card Ten Spades) (Card Jack Diamonds) = True
-canBuild (Card Ten Spades) (Card Jack Hearts) = True
-canBuild (Card Jack Hearts) (Card Queen Clubs) = True
-canBuild (Card Jack Hearts) (Card Queen Spades) = True
-canBuild (Card Jack Diamonds) (Card Queen Clubs) = True
-canBuild (Card Jack Diamonds) (Card Queen Spades) = True
-canBuild (Card Jack Clubs) (Card Queen Diamonds) = True
-canBuild (Card Jack Clubs) (Card Queen Hearts) = True
-canBuild (Card Jack Spades) (Card Queen Diamonds) = True
-canBuild (Card Jack Spades) (Card Queen Hearts) = True
-canBuild (Card Queen Hearts) (Card King Clubs) = True
-canBuild (Card Queen Hearts) (Card King Spades) = True
-canBuild (Card Queen Diamonds) (Card King Clubs) = True
-canBuild (Card Queen Diamonds) (Card King Spades) = True
-canBuild (Card Queen Clubs) (Card King Diamonds) = True
-canBuild (Card Queen Clubs) (Card King Hearts) = True
-canBuild (Card Queen Spades) (Card King Diamonds) = True
-canBuild (Card Queen Spades) (Card King Hearts) = True
-canBuild _ _ = False
+canBuildCard :: Card -> Card -> Bool
+canBuildCard (Card Ace Hearts) (Card Two Clubs) = True
+canBuildCard (Card Ace Hearts) (Card Two Spades) = True
+canBuildCard (Card Ace Diamonds) (Card Two Clubs) = True
+canBuildCard (Card Ace Diamonds) (Card Two Spades) = True
+canBuildCard (Card Ace Clubs) (Card Two Diamonds) = True
+canBuildCard (Card Ace Clubs) (Card Two Hearts) = True
+canBuildCard (Card Ace Spades) (Card Two Diamonds) = True
+canBuildCard (Card Ace Spades) (Card Two Hearts) = True
+canBuildCard (Card Two Hearts) (Card Three Clubs) = True
+canBuildCard (Card Two Hearts) (Card Three Spades) = True
+canBuildCard (Card Two Diamonds) (Card Three Clubs) = True
+canBuildCard (Card Two Diamonds) (Card Three Spades) = True
+canBuildCard (Card Two Clubs) (Card Three Diamonds) = True
+canBuildCard (Card Two Clubs) (Card Three Hearts) = True
+canBuildCard (Card Two Spades) (Card Three Diamonds) = True
+canBuildCard (Card Two Spades) (Card Three Hearts) = True
+canBuildCard (Card Three Hearts) (Card Four Clubs) = True
+canBuildCard (Card Three Hearts) (Card Four Spades) = True
+canBuildCard (Card Three Diamonds) (Card Four Clubs) = True
+canBuildCard (Card Three Diamonds) (Card Four Spades) = True
+canBuildCard (Card Three Clubs) (Card Four Diamonds) = True
+canBuildCard (Card Three Clubs) (Card Four Hearts) = True
+canBuildCard (Card Three Spades) (Card Four Diamonds) = True
+canBuildCard (Card Three Spades) (Card Four Hearts) = True
+canBuildCard (Card Four Hearts) (Card Five Clubs) = True
+canBuildCard (Card Four Hearts) (Card Five Spades) = True
+canBuildCard (Card Four Diamonds) (Card Five Clubs) = True
+canBuildCard (Card Four Diamonds) (Card Five Spades) = True
+canBuildCard (Card Four Clubs) (Card Five Diamonds) = True
+canBuildCard (Card Four Clubs) (Card Five Hearts) = True
+canBuildCard (Card Four Spades) (Card Five Diamonds) = True
+canBuildCard (Card Four Spades) (Card Five Hearts) = True
+canBuildCard (Card Five Hearts) (Card Six Clubs) = True
+canBuildCard (Card Five Hearts) (Card Six Spades) = True
+canBuildCard (Card Five Diamonds) (Card Six Clubs) = True
+canBuildCard (Card Five Diamonds) (Card Six Spades) = True
+canBuildCard (Card Five Clubs) (Card Six Diamonds) = True
+canBuildCard (Card Five Clubs) (Card Six Hearts) = True
+canBuildCard (Card Five Spades) (Card Six Diamonds) = True
+canBuildCard (Card Five Spades) (Card Six Hearts) = True
+canBuildCard (Card Six Hearts) (Card Seven Clubs) = True
+canBuildCard (Card Six Hearts) (Card Seven Spades) = True
+canBuildCard (Card Six Diamonds) (Card Seven Clubs) = True
+canBuildCard (Card Six Diamonds) (Card Seven Spades) = True
+canBuildCard (Card Six Clubs) (Card Seven Diamonds) = True
+canBuildCard (Card Six Clubs) (Card Seven Hearts) = True
+canBuildCard (Card Six Spades) (Card Seven Diamonds) = True
+canBuildCard (Card Six Spades) (Card Seven Hearts) = True
+canBuildCard (Card Seven Hearts) (Card Eight Clubs) = True
+canBuildCard (Card Seven Hearts) (Card Eight Spades) = True
+canBuildCard (Card Seven Diamonds) (Card Eight Clubs) = True
+canBuildCard (Card Seven Diamonds) (Card Eight Spades) = True
+canBuildCard (Card Seven Clubs) (Card Eight Diamonds) = True
+canBuildCard (Card Seven Clubs) (Card Eight Hearts) = True
+canBuildCard (Card Seven Spades) (Card Eight Diamonds) = True
+canBuildCard (Card Seven Spades) (Card Eight Hearts) = True
+canBuildCard (Card Eight Hearts) (Card Nine Clubs) = True
+canBuildCard (Card Eight Hearts) (Card Nine Spades) = True
+canBuildCard (Card Eight Diamonds) (Card Nine Clubs) = True
+canBuildCard (Card Eight Diamonds) (Card Nine Spades) = True
+canBuildCard (Card Eight Clubs) (Card Nine Diamonds) = True
+canBuildCard (Card Eight Clubs) (Card Nine Hearts) = True
+canBuildCard (Card Eight Spades) (Card Nine Diamonds) = True
+canBuildCard (Card Eight Spades) (Card Nine Hearts) = True
+canBuildCard (Card Nine Hearts) (Card Ten Clubs) = True
+canBuildCard (Card Nine Hearts) (Card Ten Spades) = True
+canBuildCard (Card Nine Diamonds) (Card Ten Clubs) = True
+canBuildCard (Card Nine Diamonds) (Card Ten Spades) = True
+canBuildCard (Card Nine Clubs) (Card Ten Diamonds) = True
+canBuildCard (Card Nine Clubs) (Card Ten Hearts) = True
+canBuildCard (Card Nine Spades) (Card Ten Diamonds) = True
+canBuildCard (Card Nine Spades) (Card Ten Hearts) = True
+canBuildCard (Card Ten Hearts) (Card Jack Clubs) = True
+canBuildCard (Card Ten Hearts) (Card Jack Spades) = True
+canBuildCard (Card Ten Diamonds) (Card Jack Clubs) = True
+canBuildCard (Card Ten Diamonds) (Card Jack Spades) = True
+canBuildCard (Card Ten Clubs) (Card Jack Diamonds) = True
+canBuildCard (Card Ten Clubs) (Card Jack Hearts) = True
+canBuildCard (Card Ten Spades) (Card Jack Diamonds) = True
+canBuildCard (Card Ten Spades) (Card Jack Hearts) = True
+canBuildCard (Card Jack Hearts) (Card Queen Clubs) = True
+canBuildCard (Card Jack Hearts) (Card Queen Spades) = True
+canBuildCard (Card Jack Diamonds) (Card Queen Clubs) = True
+canBuildCard (Card Jack Diamonds) (Card Queen Spades) = True
+canBuildCard (Card Jack Clubs) (Card Queen Diamonds) = True
+canBuildCard (Card Jack Clubs) (Card Queen Hearts) = True
+canBuildCard (Card Jack Spades) (Card Queen Diamonds) = True
+canBuildCard (Card Jack Spades) (Card Queen Hearts) = True
+canBuildCard (Card Queen Hearts) (Card King Clubs) = True
+canBuildCard (Card Queen Hearts) (Card King Spades) = True
+canBuildCard (Card Queen Diamonds) (Card King Clubs) = True
+canBuildCard (Card Queen Diamonds) (Card King Spades) = True
+canBuildCard (Card Queen Clubs) (Card King Diamonds) = True
+canBuildCard (Card Queen Clubs) (Card King Hearts) = True
+canBuildCard (Card Queen Spades) (Card King Diamonds) = True
+canBuildCard (Card Queen Spades) (Card King Hearts) = True
+canBuildCard _ _ = False
+
+canBuild :: (HasCard a, HasCard b) => a -> b -> Bool
+canBuild a b = canBuildCard (toCard a) (toCard b)
 
 -- Transition state functions
 
@@ -123,7 +127,7 @@ canBuild _ _ = False
 When the stock is empty this moves the waste cards
 back into the stock.
 -}
-stockToWaste :: Solitaire -> Solitaire
+stockToWaste :: (Eq c, Show c) => Solitaire c -> Solitaire c
 stockToWaste s
     | stock s /= [] = stockToWaste' s
     | otherwise = s
@@ -132,7 +136,7 @@ stockToWaste s
   Moves the top stock card to the top of the waste
   Warning cannot be used with stock is empty
 -}
-stockToWaste' :: Solitaire -> Solitaire
+stockToWaste' :: (Eq c, Show c) => Solitaire c -> Solitaire c
 stockToWaste' s = newSolitaire
   where
     c : cs = stock s
@@ -143,12 +147,12 @@ stockToWaste' s = newSolitaire
 {- | Helper transition function.
   Moves the cards in the waste to the stock and emtpies waste
 -}
-refreshStock :: Solitaire -> Solitaire
+refreshStock :: (Eq c, Show c) => Solitaire c -> Solitaire c
 refreshStock s
     | null $ stock s = s{stock = reverse $ waste s, waste = []}
     | otherwise = s
 
-wasteToTableauOne :: Solitaire -> Solitaire
+wasteToTableauOne :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
 wasteToTableauOne s
     | null $ waste s = s
     | null firstTableau = s
@@ -158,7 +162,7 @@ wasteToTableauOne s
     initTableau = tableau s
     firstTableau = one initTableau
 
-wasteToTableauTwo :: Solitaire -> Solitaire
+wasteToTableauTwo :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
 wasteToTableauTwo s
     | null $ waste s = s
     | null secondTableau = s
@@ -168,7 +172,7 @@ wasteToTableauTwo s
     initTableau = tableau s
     secondTableau = two initTableau
 
-wasteToTableauThree :: Solitaire -> Solitaire
+wasteToTableauThree :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
 wasteToTableauThree s
     | null $ waste s = s
     | null newTableau = s
@@ -178,7 +182,7 @@ wasteToTableauThree s
     initTableau = tableau s
     newTableau = three initTableau
 
-wasteToTableauFour :: Solitaire -> Solitaire
+wasteToTableauFour :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
 wasteToTableauFour s
     | null $ waste s = s
     | null newTableau = s
@@ -188,7 +192,7 @@ wasteToTableauFour s
     initTableau = tableau s
     newTableau = four initTableau
 
-wasteToTableauFive :: Solitaire -> Solitaire
+wasteToTableauFive :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
 wasteToTableauFive s
     | null $ waste s = s
     | null newTableau = s
@@ -198,7 +202,7 @@ wasteToTableauFive s
     initTableau = tableau s
     newTableau = five initTableau
 
-wasteToTableauSix :: Solitaire -> Solitaire
+wasteToTableauSix :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
 wasteToTableauSix s
     | null $ waste s = s
     | null newTableau = s
@@ -208,7 +212,7 @@ wasteToTableauSix s
     initTableau = tableau s
     newTableau = six initTableau
 
-wasteToTableauSeven :: Solitaire -> Solitaire
+wasteToTableauSeven :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
 wasteToTableauSeven s
     | null $ waste s = s
     | null newTableau = s
@@ -218,10 +222,10 @@ wasteToTableauSeven s
     initTableau = tableau s
     newTableau = seven initTableau
 
-wasteMinusOne :: Waste -> Waste
+wasteMinusOne :: Waste c -> Waste c
 wasteMinusOne (_ : ws) = ws
 
-tableauToTableau :: Int -> Int -> Int -> Solitaire -> Solitaire
+tableauToTableau :: (Eq c, HasCard c, Show c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
 tableauToTableau fromIdx toIdx numCards s
     | canBuild fromCard toCard = s{tableau = updatedTableau}
     | otherwise = s
@@ -235,7 +239,7 @@ tableauToTableau fromIdx toIdx numCards s
     updatedToPile = cardsToMove ++ toBuildPile
     updatedTableau = updateTableau fromIdx newFromBuildPile toIdx updatedToPile t
 
-getBuildPile :: Int -> Tableau -> BuildPile
+getBuildPile :: Int -> Tableau c -> BuildPile c
 getBuildPile idx tableau' = case idx of
     1 -> one tableau'
     2 -> two tableau'
@@ -246,7 +250,7 @@ getBuildPile idx tableau' = case idx of
     7 -> seven tableau'
     _ -> error "Invalid tableau index"
 
-updateTableau :: Int -> BuildPile -> Int -> BuildPile -> Tableau -> Tableau
+updateTableau :: Int -> BuildPile c -> Int -> BuildPile c -> Tableau c -> Tableau c
 updateTableau fromIdx newFromBuildPile toIdx newToBuildPile t =
     t
         { one = if fromIdx == 1 then newFromBuildPile else if toIdx == 1 then newToBuildPile else one t

@@ -25,7 +25,9 @@ source-repository head
 
 library
   exposed-modules:
-      Game.Components.State
+      Game.Card
+      Game.Deck
+      Game.Solitaire.Create
       Game.Solitaire.State
       Game.Solitaire.Transitions
   other-modules:

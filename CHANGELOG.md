@@ -1,4 +1,4 @@
-# Changelog for `solitool`
+# Changelog for `solitaire-hint`
 
 All notable changes to this project will be documented in this file.
 
