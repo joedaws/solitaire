@@ -1,17 +1,18 @@
 module Game.Card (
     HasCard (..),
     HasFace (..),
+    IsPlayable (..),
     Card (..),
-    GameCard (..),
+    KlondikeCard (..),
     Color,
     Face (..),
     Rank (..),
     Suit (..),
     color,
-    flipGameCard,
+    flipKlondikeCard,
     mkCard,
-    mkGameCardDown,
-    mkGameCardUp,
+    mkKlondikeCardDown,
+    mkKlondikeCardUp,
 ) where
 
 class HasCard a where
@@ -20,6 +21,9 @@ class HasCard a where
 class HasFace a where
     toFace :: a -> Face
     flipCard :: a -> a
+
+class IsPlayable a where
+    isPlayable :: a -> Bool
 
 data Suit
     = Hearts
@@ -82,22 +86,25 @@ instance HasCard Card where
 
 data Face = Up | Down deriving (Show, Eq)
 
-data GameCard = GameCard
+data KlondikeCard = KlondikeCard
     { card :: Card
     , face :: Face
     }
     deriving (Eq)
 
-instance Show GameCard where
-    show (GameCard _ Down) = "**"
-    show (GameCard c Up) = show c
+instance Show KlondikeCard where
+    show (KlondikeCard _ Down) = "**"
+    show (KlondikeCard c Up) = show c
 
-instance HasCard GameCard where
+instance HasCard KlondikeCard where
     toCard = card
 
-instance HasFace GameCard where
+instance HasFace KlondikeCard where
     toFace = face
-    flipCard = flipGameCard
+    flipCard = flipKlondikeCard
+
+instance IsPlayable KlondikeCard where
+    isPlayable c = face c == Up  
 
 data Color = Red | Black deriving (Show, Eq)
 
@@ -110,12 +117,12 @@ color (Card _ Spades) = Black
 mkCard :: Rank -> Suit -> Card
 mkCard = Card
 
-mkGameCardDown :: Rank -> Suit -> GameCard
-mkGameCardDown r s = GameCard (Card r s) Down
+mkKlondikeCardDown :: Rank -> Suit -> KlondikeCard
+mkKlondikeCardDown r s = KlondikeCard (Card r s) Down
 
-mkGameCardUp :: Rank -> Suit -> GameCard
-mkGameCardUp r s = GameCard (Card r s) Up
+mkKlondikeCardUp :: Rank -> Suit -> KlondikeCard
+mkKlondikeCardUp r s = KlondikeCard (Card r s) Up
 
-flipGameCard :: GameCard -> GameCard
-flipGameCard (GameCard c Up) = GameCard c Down
-flipGameCard (GameCard c Down) = GameCard c Up
+flipKlondikeCard :: KlondikeCard -> KlondikeCard
+flipKlondikeCard (KlondikeCard c Up) = KlondikeCard c Down
+flipKlondikeCard (KlondikeCard c Down) = KlondikeCard c Up

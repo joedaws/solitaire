@@ -7,6 +7,6 @@ import Game.Solitaire.Create
 
 main :: IO ()
 main = do
-    shuffledDeck <- shuffleDeck $ createDeck mkGameCardDown
+    shuffledDeck <- shuffleDeck $ createDeck mkKlondikeCardDown
     let solitaire  = setupSolitaire shuffledDeck
     render $ toStrList solitaire
