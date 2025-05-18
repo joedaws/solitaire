@@ -69,7 +69,7 @@ toStrList (Solitaire s [] f t) = [line0, line1, line2, line3, line4, line5, line
     line0 = "stock: " ++ show (length s)
     line1 = toStrFoundationPile Hearts (heartsPile f) ++ "||" ++ toStrBuildPile (seven t)
     line2 = toStrFoundationPile Clubs (clubsPile f) ++ "||" ++ toStrBuildPile (six t)
-    line3 = toStrFoundationPile Diamonds (clubsPile f) ++ "||" ++ toStrBuildPile (five t)
+    line3 = toStrFoundationPile Diamonds (diamondsPile f) ++ "||" ++ toStrBuildPile (five t)
     line4 = toStrFoundationPile Spades (spadesPile f) ++ "||" ++ toStrBuildPile (four t)
     line5 = "  ||" ++ toStrBuildPile (three t)
     line6 = "--||" ++ toStrBuildPile (two t)
@@ -79,7 +79,7 @@ toStrList (Solitaire [] w f t) = [line0, line1, line2, line3, line4, line5, line
     line0 = "stock: 0"
     line1 = toStrFoundationPile Hearts (heartsPile f) ++ "||" ++ toStrBuildPile (seven t)
     line2 = toStrFoundationPile Clubs (clubsPile f) ++ "||" ++ toStrBuildPile (six t)
-    line3 = toStrFoundationPile Diamonds (clubsPile f) ++ "||" ++ toStrBuildPile (five t)
+    line3 = toStrFoundationPile Diamonds (diamondsPile f) ++ "||" ++ toStrBuildPile (five t)
     line4 = toStrFoundationPile Spades (spadesPile f) ++ "||" ++ toStrBuildPile (four t)
     line5 = "  ||" ++ toStrBuildPile (three t)
     line6 = show (head w) ++ "||" ++ toStrBuildPile (two t)
@@ -89,7 +89,7 @@ toStrList (Solitaire s w f t) = [line0, line1, line2, line3, line4, line5, line6
     line0 = "stock: " ++ show (length s)
     line1 = toStrFoundationPile Hearts (heartsPile f) ++ "||" ++ toStrBuildPile (seven t)
     line2 = toStrFoundationPile Clubs (clubsPile f) ++ "||" ++ toStrBuildPile (six t)
-    line3 = toStrFoundationPile Diamonds (clubsPile f) ++ "||" ++ toStrBuildPile (five t)
+    line3 = toStrFoundationPile Diamonds (diamondsPile f) ++ "||" ++ toStrBuildPile (five t)
     line4 = toStrFoundationPile Spades (spadesPile f) ++ "||" ++ toStrBuildPile (four t)
     line5 = "  ||" ++ toStrBuildPile (three t)
     line6 = show (head w) ++ "||" ++ toStrBuildPile (two t)
@@ -107,5 +107,5 @@ toStrFoundationPile s [] = case s of
     Hearts -> "-H"
     Diamonds -> "-D"
     Clubs -> "-C"
-    Spades -> "-D"
+    Spades -> "-S"
 toStrFoundationPile _ cs = show $ head cs
