@@ -12,10 +12,10 @@ module Game.Solitaire.Transitions (
     wasteToTableauSeven,
     wasteMinusOne,
     tableauToTableau,
+    tableauOneToHeartFoundation,
 ) where
 
 import Game.Card
-import Game.Deck
 import Game.Solitaire.State
 
 canBuildCard :: Card -> Card -> Bool
@@ -117,8 +117,10 @@ canBuildCard (Card Queen Spades) (Card King Diamonds) = True
 canBuildCard (Card Queen Spades) (Card King Hearts) = True
 canBuildCard _ _ = False
 
-canBuild :: (HasCard a, HasCard b) => a -> b -> Bool
-canBuild a b = canBuildCard (toCard a) (toCard b)
+canBuild :: (HasCard a, HasCard b, IsPlayable a, IsPlayable b) => a -> b -> Bool
+canBuild a b
+    | isPlayable a = canBuildCard (toCard a) (toCard b)
+    | otherwise = False
 
 -- Transition state functions
 
@@ -152,7 +154,7 @@ refreshStock s
     | null $ stock s = s{stock = reverse $ waste s, waste = []}
     | otherwise = s
 
-wasteToTableauOne :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToTableauOne :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauOne s
     | null $ waste s = s
     | null firstTableau = s
@@ -162,7 +164,7 @@ wasteToTableauOne s
     initTableau = tableau s
     firstTableau = one initTableau
 
-wasteToTableauTwo :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToTableauTwo :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauTwo s
     | null $ waste s = s
     | null secondTableau = s
@@ -172,7 +174,7 @@ wasteToTableauTwo s
     initTableau = tableau s
     secondTableau = two initTableau
 
-wasteToTableauThree :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToTableauThree :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauThree s
     | null $ waste s = s
     | null newTableau = s
@@ -182,7 +184,7 @@ wasteToTableauThree s
     initTableau = tableau s
     newTableau = three initTableau
 
-wasteToTableauFour :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToTableauFour :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauFour s
     | null $ waste s = s
     | null newTableau = s
@@ -192,7 +194,7 @@ wasteToTableauFour s
     initTableau = tableau s
     newTableau = four initTableau
 
-wasteToTableauFive :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToTableauFive :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauFive s
     | null $ waste s = s
     | null newTableau = s
@@ -202,7 +204,7 @@ wasteToTableauFive s
     initTableau = tableau s
     newTableau = five initTableau
 
-wasteToTableauSix :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToTableauSix :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauSix s
     | null $ waste s = s
     | null newTableau = s
@@ -212,7 +214,7 @@ wasteToTableauSix s
     initTableau = tableau s
     newTableau = six initTableau
 
-wasteToTableauSeven :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToTableauSeven :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauSeven s
     | null $ waste s = s
     | null newTableau = s
@@ -225,7 +227,7 @@ wasteToTableauSeven s
 wasteMinusOne :: Waste c -> Waste c
 wasteMinusOne (_ : ws) = ws
 
-tableauToTableau :: (Eq c, HasCard c, Show c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
+tableauToTableau :: (Eq c, HasCard c, Show c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
 tableauToTableau fromIdx toIdx numCards s
     | canBuild fromCard toCard = s{tableau = updatedTableau}
     | otherwise = s
@@ -261,3 +263,34 @@ updateTableau fromIdx newFromBuildPile toIdx newToBuildPile t =
         , six = if fromIdx == 6 then newFromBuildPile else if toIdx == 6 then newToBuildPile else six t
         , seven = if fromIdx == 7 then newFromBuildPile else if toIdx == 7 then newToBuildPile else seven t
         }
+
+tableauOneToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauOneToHeartFoundation s
+    | null (one $ tableau s) = s
+    | otherwise =
+        case heartsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){heartsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){heartsPile = tableauCard : heartsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ one $ tableau s
+    newTableau = tail $ one $ tableau s
+
+-- Helper to allow placing an Ace on empty foundation
+canBuildToEmptyFoundation :: (HasCard c) => c -> Bool
+canBuildToEmptyFoundation c = toCard c == Card Ace Hearts

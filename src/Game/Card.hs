@@ -104,7 +104,7 @@ instance HasFace KlondikeCard where
     flipCard = flipKlondikeCard
 
 instance IsPlayable KlondikeCard where
-    isPlayable c = face c == Up  
+    isPlayable c = face c == Up
 
 data Color = Red | Black deriving (Show, Eq)
 
