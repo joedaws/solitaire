@@ -11,7 +11,6 @@ module Game.Solitaire.Transitions (
     wasteToTableauFive,
     wasteToTableauSix,
     wasteToTableauSeven,
-    tableauToTableau,
     tableauOneToHeartFoundation,
     tableauTwoToHeartFoundation,
     tableauThreeToHeartFoundation,
@@ -40,6 +39,7 @@ module Game.Solitaire.Transitions (
     tableauFiveToClubFoundation,
     tableauSixToClubFoundation,
     tableauSevenToClubFoundation,
+    tableauToTableau,
 ) where
 
 import Game.Card
@@ -85,6 +85,7 @@ allTransitions =
     , wasteToTableauSix
     , wasteToTableauSeven
     ]
+        ++ allTableauToTableauFunctions
 
 canBuildCard :: Card -> Card -> Bool
 canBuildCard (Card Ace Hearts) (Card Two Clubs) = True
@@ -1064,7 +1065,16 @@ tableauSevenToClubFoundation s
     tableauCard = head $ seven $ tableau s
     newTableau = flipTop $ tail $ seven $ tableau s
 
-tableauToTableau :: (Eq c, HasCard c, Show c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
+-- ---------------------------
+-- Tableau to Tableau
+-- Here each tableau can contain at most 12 cards
+-- The first Int is the tableau to move a card from, i.e. 1--7
+-- The second Int is the tableau to move to, i.e. 1--7 that is different than this one
+-- The third Int is the number of cards to move, i.e. 1--12
+-- There are 504 such functions
+-- ---------------------------
+
+tableauToTableau :: (Eq c, HasCard c, HasFace c, Show c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
 tableauToTableau fromIdx toIdx numCards s
     | canBuild fromCard toCard = s{tableau = updatedTableau}
     | otherwise = s
@@ -1073,10 +1083,11 @@ tableauToTableau fromIdx toIdx numCards s
     fromBuildPile = getBuildPile fromIdx t
     toBuildPile = getBuildPile toIdx t
     (cardsToMove, newFromBuildPile) = splitAt numCards fromBuildPile
+    newFromBuildPile' = flipTop newFromBuildPile
     fromCard = last cardsToMove
     toCard = head toBuildPile
     updatedToPile = cardsToMove ++ toBuildPile
-    updatedTableau = updateTableau fromIdx newFromBuildPile toIdx updatedToPile t
+    updatedTableau = updateTableau fromIdx newFromBuildPile' toIdx updatedToPile t
 
 getBuildPile :: Int -> Tableau c -> BuildPile c
 getBuildPile idx tableau' = case idx of
@@ -1100,3 +1111,6 @@ updateTableau fromIdx newFromBuildPile toIdx newToBuildPile t =
         , six = if fromIdx == 6 then newFromBuildPile else if toIdx == 6 then newToBuildPile else six t
         , seven = if fromIdx == 7 then newFromBuildPile else if toIdx == 7 then newToBuildPile else seven t
         }
+
+allTableauToTableauFunctions :: (HasFace c, Show c, Eq c, HasCard c, IsPlayable c) => [Solitaire c -> Solitaire c]
+allTableauToTableauFunctions = [tableauToTableau i j n | i <- [1 .. 7], j <- [1 .. 7], i /= j, n <- [1 .. 12]]

@@ -15,6 +15,6 @@ main = do
     putStrLn "Next possible states are\n"
     let ss = hint solitaire
     mapM_ print ss
-    putStrLn "Now two steps"
-    let ss' = hint2 solitaire
-    mapM_ print ss'
+    -- putStrLn "Now two steps"
+    -- let ss' = hint2 solitaire
+    -- mapM_ print ss'
