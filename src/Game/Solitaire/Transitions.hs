@@ -299,7 +299,7 @@ wasteMinusOne (_ : ws) = ws
 canBuildToEmptyFoundation :: (HasCard c) => c -> Bool
 canBuildToEmptyFoundation c = toCard c == Card Ace Hearts
 
-tableauOneToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauOneToHeartFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauOneToHeartFoundation s
     | null (one $ tableau s) = s
     | otherwise =
@@ -324,7 +324,7 @@ tableauOneToHeartFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ one $ tableau s
-    newTableau = tail $ one $ tableau s
+    newTableau = flipTop $ tail $ one $ tableau s
 
 tableauTwoToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauTwoToHeartFoundation s

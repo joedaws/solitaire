@@ -10,6 +10,7 @@ module Game.Solitaire.State (
     Stock,
     toStrList,
     render,
+    flipTop,
 ) where
 
 import Data.List (intercalate)
@@ -109,3 +110,7 @@ toStrFoundationPile s [] = case s of
     Clubs -> "-C"
     Spades -> "-S"
 toStrFoundationPile _ cs = show $ head cs
+
+flipTop :: (HasFace c) => BuildPile c -> BuildPile c
+flipTop [] = []
+flipTop (x : xs) = flipCard x : xs

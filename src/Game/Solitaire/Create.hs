@@ -24,10 +24,6 @@ dealTableaus deck n count acc =
     (dealt, rest) = splitAt n deck
     newPile = flipTop dealt
 
-flipTop :: (HasFace c) => BuildPile c -> BuildPile c
-flipTop [] = []
-flipTop (x : xs) = flipCard x : xs
-
 setupTableau :: [BuildPile c] -> Tableau c
 setupTableau bps = Tableau p1 p2 p3 p4 p5 p6 p7
   where
