@@ -2,6 +2,19 @@
 
 A CLI for solitaire hints written in Haskell.
 
+# Usage
+After install the `shint` executable call it to 
+- generate a random solitaire game
+- display all possible next states
+
+# Setup
+
+- Install [ghcup](https://haskell.org/ghcup) which will furnish you with
+  `stack` and a version of `ghc`. 
+- Install appropriate versions of `ghc` and `stack` according to the 
+  project files.
+- Run `stack install` to copy the `shint` executable to your local path.
+
 # Game state
 
 ``` txt 
