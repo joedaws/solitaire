@@ -6,7 +6,7 @@ import Game.Card
 import Game.Solitaire.State
 import Game.Solitaire.Transitions (allTransitions)
 
-hint :: (HasCard c, Eq c, Show c, IsPlayable c) => Solitaire c -> [Solitaire c]
+hint :: (HasFace c, HasCard c, Eq c, Show c, IsPlayable c) => Solitaire c -> [Solitaire c]
 hint s = filter differentState allNextStates
   where
     differentState s' = s /= s'

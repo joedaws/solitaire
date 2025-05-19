@@ -45,7 +45,7 @@ module Game.Solitaire.Transitions (
 import Game.Card
 import Game.Solitaire.State
 
-allTransitions :: (IsPlayable c, HasCard c, Eq c, Show c) => [Solitaire c -> Solitaire c]
+allTransitions :: (IsPlayable c, HasCard c, HasFace c, Eq c, Show c) => [Solitaire c -> Solitaire c]
 allTransitions =
     [ refreshStock
     , stockToWaste
@@ -197,7 +197,7 @@ canBuild a b
 When the stock is empty this moves the waste cards
 back into the stock.
 -}
-stockToWaste :: (Eq c, Show c) => Solitaire c -> Solitaire c
+stockToWaste :: (HasFace c, Eq c, Show c) => Solitaire c -> Solitaire c
 stockToWaste s
     | stock s /= [] = stockToWaste' s
     | otherwise = s
