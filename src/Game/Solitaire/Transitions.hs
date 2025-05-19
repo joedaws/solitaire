@@ -296,8 +296,17 @@ wasteMinusOne :: Waste c -> Waste c
 wasteMinusOne (_ : ws) = ws
 
 -- Helper to allow placing an Ace on empty foundation
-canBuildToEmptyFoundation :: (HasCard c) => c -> Bool
-canBuildToEmptyFoundation c = toCard c == Card Ace Hearts
+canBuildToEmptyHeartFoundation :: (HasCard c) => c -> Bool
+canBuildToEmptyHeartFoundation c = toCard c == Card Ace Hearts
+
+canBuildToEmptySpadeFoundation :: (HasCard c) => c -> Bool
+canBuildToEmptySpadeFoundation c = toCard c == Card Ace Spades
+
+canBuildToEmptyDiamondFoundation :: (HasCard c) => c -> Bool
+canBuildToEmptyDiamondFoundation c = toCard c == Card Ace Diamonds
+
+canBuildToEmptyClubFoundation :: (HasCard c) => c -> Bool
+canBuildToEmptyClubFoundation c = toCard c == Card Ace Clubs
 
 tableauOneToHeartFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauOneToHeartFoundation s
@@ -306,7 +315,7 @@ tableauOneToHeartFoundation s
         case heartsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyHeartFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{one = newTableau}
@@ -333,7 +342,7 @@ tableauTwoToHeartFoundation s
         case heartsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyHeartFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{two = newTableau}
@@ -360,7 +369,7 @@ tableauThreeToHeartFoundation s
         case heartsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyHeartFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{three = newTableau}
@@ -387,7 +396,7 @@ tableauFourToHeartFoundation s
         case heartsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyHeartFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{four = newTableau}
@@ -414,7 +423,7 @@ tableauFiveToHeartFoundation s
         case heartsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyHeartFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{five = newTableau}
@@ -441,7 +450,7 @@ tableauSixToHeartFoundation s
         case heartsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyHeartFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{six = newTableau}
@@ -468,7 +477,7 @@ tableauSevenToHeartFoundation s
         case heartsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyHeartFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{seven = newTableau}
@@ -495,7 +504,7 @@ tableauOneToSpadeFoundation s
         case spadesPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptySpadeFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{one = newTableau}
@@ -522,7 +531,7 @@ tableauTwoToSpadeFoundation s
         case spadesPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptySpadeFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{two = newTableau}
@@ -549,7 +558,7 @@ tableauThreeToSpadeFoundation s
         case spadesPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptySpadeFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{three = newTableau}
@@ -576,7 +585,7 @@ tableauFourToSpadeFoundation s
         case spadesPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptySpadeFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{four = newTableau}
@@ -603,7 +612,7 @@ tableauFiveToSpadeFoundation s
         case spadesPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptySpadeFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{five = newTableau}
@@ -630,7 +639,7 @@ tableauSixToSpadeFoundation s
         case spadesPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptySpadeFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{six = newTableau}
@@ -657,7 +666,7 @@ tableauSevenToSpadeFoundation s
         case spadesPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptySpadeFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{seven = newTableau}
@@ -684,7 +693,7 @@ tableauOneToDiamondFoundation s
         case diamondsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyDiamondFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{one = newTableau}
@@ -711,7 +720,7 @@ tableauTwoToDiamondFoundation s
         case diamondsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyDiamondFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{two = newTableau}
@@ -738,7 +747,7 @@ tableauThreeToDiamondFoundation s
         case diamondsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyDiamondFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{three = newTableau}
@@ -765,7 +774,7 @@ tableauFourToDiamondFoundation s
         case diamondsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyDiamondFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{four = newTableau}
@@ -792,7 +801,7 @@ tableauFiveToDiamondFoundation s
         case diamondsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyDiamondFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{five = newTableau}
@@ -819,7 +828,7 @@ tableauSixToDiamondFoundation s
         case diamondsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyDiamondFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{six = newTableau}
@@ -846,7 +855,7 @@ tableauSevenToDiamondFoundation s
         case diamondsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyDiamondFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{seven = newTableau}
@@ -873,7 +882,7 @@ tableauOneToClubFoundation s
         case clubsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyClubFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{one = newTableau}
@@ -900,7 +909,7 @@ tableauTwoToClubFoundation s
         case clubsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyClubFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{two = newTableau}
@@ -927,7 +936,7 @@ tableauThreeToClubFoundation s
         case clubsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyClubFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{three = newTableau}
@@ -954,7 +963,7 @@ tableauFourToClubFoundation s
         case clubsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyClubFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{four = newTableau}
@@ -981,7 +990,7 @@ tableauFiveToClubFoundation s
         case clubsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyClubFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{five = newTableau}
@@ -1008,7 +1017,7 @@ tableauSixToClubFoundation s
         case clubsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyClubFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{six = newTableau}
@@ -1035,7 +1044,7 @@ tableauSevenToClubFoundation s
         case clubsPile (foundations s) of
             [] ->
                 -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
+                if canBuildToEmptyClubFoundation tableauCard
                     then
                         s
                             { tableau = initTableau{seven = newTableau}
