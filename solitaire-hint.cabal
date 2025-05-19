@@ -28,6 +28,7 @@ library
       Game.Card
       Game.Deck
       Game.Solitaire.Create
+      Game.Solitaire.Hint
       Game.Solitaire.State
       Game.Solitaire.Transitions
   other-modules:
