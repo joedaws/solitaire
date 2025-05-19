@@ -1,5 +1,6 @@
 -- | functions to represent transitions in state
 module Game.Solitaire.Transitions (
+    allTransitions,
     canBuild,
     stockToWaste,
     refreshStock,
@@ -10,13 +11,80 @@ module Game.Solitaire.Transitions (
     wasteToTableauFive,
     wasteToTableauSix,
     wasteToTableauSeven,
-    wasteMinusOne,
     tableauToTableau,
     tableauOneToHeartFoundation,
+    tableauTwoToHeartFoundation,
+    tableauThreeToHeartFoundation,
+    tableauFourToHeartFoundation,
+    tableauFiveToHeartFoundation,
+    tableauSixToHeartFoundation,
+    tableauSevenToHeartFoundation,
+    tableauOneToSpadeFoundation,
+    tableauTwoToSpadeFoundation,
+    tableauThreeToSpadeFoundation,
+    tableauFourToSpadeFoundation,
+    tableauFiveToSpadeFoundation,
+    tableauSixToSpadeFoundation,
+    tableauSevenToSpadeFoundation,
+    tableauOneToDiamondFoundation,
+    tableauTwoToDiamondFoundation,
+    tableauThreeToDiamondFoundation,
+    tableauFourToDiamondFoundation,
+    tableauFiveToDiamondFoundation,
+    tableauSixToDiamondFoundation,
+    tableauSevenToDiamondFoundation,
+    tableauOneToClubFoundation,
+    tableauTwoToClubFoundation,
+    tableauThreeToClubFoundation,
+    tableauFourToClubFoundation,
+    tableauFiveToClubFoundation,
+    tableauSixToClubFoundation,
+    tableauSevenToClubFoundation,
 ) where
 
 import Game.Card
 import Game.Solitaire.State
+
+allTransitions :: (IsPlayable c, HasCard c, Eq c, Show c) => [Solitaire c -> Solitaire c]
+allTransitions =
+    [ refreshStock
+    , stockToWaste
+    , tableauOneToHeartFoundation
+    , tableauTwoToHeartFoundation
+    , tableauThreeToHeartFoundation
+    , tableauFourToHeartFoundation
+    , tableauFiveToHeartFoundation
+    , tableauSixToHeartFoundation
+    , tableauSevenToHeartFoundation
+    , tableauOneToSpadeFoundation
+    , tableauTwoToSpadeFoundation
+    , tableauThreeToSpadeFoundation
+    , tableauFourToSpadeFoundation
+    , tableauFiveToSpadeFoundation
+    , tableauSixToSpadeFoundation
+    , tableauSevenToSpadeFoundation
+    , tableauOneToDiamondFoundation
+    , tableauTwoToDiamondFoundation
+    , tableauThreeToDiamondFoundation
+    , tableauFourToDiamondFoundation
+    , tableauFiveToDiamondFoundation
+    , tableauSixToDiamondFoundation
+    , tableauSevenToDiamondFoundation
+    , tableauOneToClubFoundation
+    , tableauTwoToClubFoundation
+    , tableauThreeToClubFoundation
+    , tableauFourToClubFoundation
+    , tableauFiveToClubFoundation
+    , tableauSixToClubFoundation
+    , tableauSevenToClubFoundation
+    , wasteToTableauOne
+    , wasteToTableauTwo
+    , wasteToTableauThree
+    , wasteToTableauFour
+    , wasteToTableauFive
+    , wasteToTableauSix
+    , wasteToTableauSeven
+    ]
 
 canBuildCard :: Card -> Card -> Bool
 canBuildCard (Card Ace Hearts) (Card Two Clubs) = True
@@ -227,6 +295,766 @@ wasteToTableauSeven s
 wasteMinusOne :: Waste c -> Waste c
 wasteMinusOne (_ : ws) = ws
 
+-- Helper to allow placing an Ace on empty foundation
+canBuildToEmptyFoundation :: (HasCard c) => c -> Bool
+canBuildToEmptyFoundation c = toCard c == Card Ace Hearts
+
+tableauOneToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauOneToHeartFoundation s
+    | null (one $ tableau s) = s
+    | otherwise =
+        case heartsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){heartsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){heartsPile = tableauCard : heartsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ one $ tableau s
+    newTableau = tail $ one $ tableau s
+
+tableauTwoToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauTwoToHeartFoundation s
+    | null (two $ tableau s) = s
+    | otherwise =
+        case heartsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{two = newTableau}
+                            , foundations = (foundations s){heartsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{two = newTableau}
+                            , foundations = (foundations s){heartsPile = tableauCard : heartsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ two $ tableau s
+    newTableau = tail $ two $ tableau s
+
+tableauThreeToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauThreeToHeartFoundation s
+    | null (three $ tableau s) = s
+    | otherwise =
+        case heartsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{three = newTableau}
+                            , foundations = (foundations s){heartsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{three = newTableau}
+                            , foundations = (foundations s){heartsPile = tableauCard : heartsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ three $ tableau s
+    newTableau = tail $ three $ tableau s
+
+tableauFourToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFourToHeartFoundation s
+    | null (four $ tableau s) = s
+    | otherwise =
+        case heartsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{four = newTableau}
+                            , foundations = (foundations s){heartsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{four = newTableau}
+                            , foundations = (foundations s){heartsPile = tableauCard : heartsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ four $ tableau s
+    newTableau = tail $ four $ tableau s
+
+tableauFiveToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFiveToHeartFoundation s
+    | null (five $ tableau s) = s
+    | otherwise =
+        case heartsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{five = newTableau}
+                            , foundations = (foundations s){heartsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{five = newTableau}
+                            , foundations = (foundations s){heartsPile = tableauCard : heartsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ five $ tableau s
+    newTableau = tail $ five $ tableau s
+
+tableauSixToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSixToHeartFoundation s
+    | null (six $ tableau s) = s
+    | otherwise =
+        case heartsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{six = newTableau}
+                            , foundations = (foundations s){heartsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{six = newTableau}
+                            , foundations = (foundations s){heartsPile = tableauCard : heartsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ six $ tableau s
+    newTableau = tail $ six $ tableau s
+
+tableauSevenToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSevenToHeartFoundation s
+    | null (seven $ tableau s) = s
+    | otherwise =
+        case heartsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{seven = newTableau}
+                            , foundations = (foundations s){heartsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{seven = newTableau}
+                            , foundations = (foundations s){heartsPile = tableauCard : heartsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ seven $ tableau s
+    newTableau = tail $ seven $ tableau s
+
+tableauOneToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauOneToSpadeFoundation s
+    | null (one $ tableau s) = s
+    | otherwise =
+        case spadesPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){spadesPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){spadesPile = tableauCard : spadesPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ one $ tableau s
+    newTableau = tail $ one $ tableau s
+
+tableauTwoToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauTwoToSpadeFoundation s
+    | null (two $ tableau s) = s
+    | otherwise =
+        case spadesPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{two = newTableau}
+                            , foundations = (foundations s){spadesPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{two = newTableau}
+                            , foundations = (foundations s){spadesPile = tableauCard : spadesPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ two $ tableau s
+    newTableau = tail $ two $ tableau s
+
+tableauThreeToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauThreeToSpadeFoundation s
+    | null (three $ tableau s) = s
+    | otherwise =
+        case spadesPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{three = newTableau}
+                            , foundations = (foundations s){spadesPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{three = newTableau}
+                            , foundations = (foundations s){spadesPile = tableauCard : spadesPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ three $ tableau s
+    newTableau = tail $ three $ tableau s
+
+tableauFourToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFourToSpadeFoundation s
+    | null (four $ tableau s) = s
+    | otherwise =
+        case spadesPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{four = newTableau}
+                            , foundations = (foundations s){spadesPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{four = newTableau}
+                            , foundations = (foundations s){spadesPile = tableauCard : spadesPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ four $ tableau s
+    newTableau = tail $ four $ tableau s
+
+tableauFiveToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFiveToSpadeFoundation s
+    | null (five $ tableau s) = s
+    | otherwise =
+        case spadesPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{five = newTableau}
+                            , foundations = (foundations s){spadesPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{five = newTableau}
+                            , foundations = (foundations s){spadesPile = tableauCard : spadesPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ five $ tableau s
+    newTableau = tail $ five $ tableau s
+
+tableauSixToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSixToSpadeFoundation s
+    | null (six $ tableau s) = s
+    | otherwise =
+        case spadesPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{six = newTableau}
+                            , foundations = (foundations s){spadesPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{six = newTableau}
+                            , foundations = (foundations s){spadesPile = tableauCard : spadesPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ six $ tableau s
+    newTableau = tail $ six $ tableau s
+
+tableauSevenToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSevenToSpadeFoundation s
+    | null (seven $ tableau s) = s
+    | otherwise =
+        case spadesPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{seven = newTableau}
+                            , foundations = (foundations s){spadesPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{seven = newTableau}
+                            , foundations = (foundations s){spadesPile = tableauCard : spadesPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ seven $ tableau s
+    newTableau = tail $ seven $ tableau s
+
+tableauOneToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauOneToDiamondFoundation s
+    | null (one $ tableau s) = s
+    | otherwise =
+        case diamondsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){diamondsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){diamondsPile = tableauCard : diamondsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ one $ tableau s
+    newTableau = tail $ one $ tableau s
+
+tableauTwoToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauTwoToDiamondFoundation s
+    | null (two $ tableau s) = s
+    | otherwise =
+        case diamondsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{two = newTableau}
+                            , foundations = (foundations s){diamondsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{two = newTableau}
+                            , foundations = (foundations s){diamondsPile = tableauCard : diamondsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ two $ tableau s
+    newTableau = tail $ two $ tableau s
+
+tableauThreeToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauThreeToDiamondFoundation s
+    | null (three $ tableau s) = s
+    | otherwise =
+        case diamondsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{three = newTableau}
+                            , foundations = (foundations s){diamondsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{three = newTableau}
+                            , foundations = (foundations s){diamondsPile = tableauCard : diamondsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ three $ tableau s
+    newTableau = tail $ three $ tableau s
+
+tableauFourToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFourToDiamondFoundation s
+    | null (four $ tableau s) = s
+    | otherwise =
+        case diamondsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{four = newTableau}
+                            , foundations = (foundations s){diamondsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{four = newTableau}
+                            , foundations = (foundations s){diamondsPile = tableauCard : diamondsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ four $ tableau s
+    newTableau = tail $ four $ tableau s
+
+tableauFiveToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFiveToDiamondFoundation s
+    | null (five $ tableau s) = s
+    | otherwise =
+        case diamondsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{five = newTableau}
+                            , foundations = (foundations s){diamondsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{five = newTableau}
+                            , foundations = (foundations s){diamondsPile = tableauCard : diamondsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ five $ tableau s
+    newTableau = tail $ five $ tableau s
+
+tableauSixToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSixToDiamondFoundation s
+    | null (six $ tableau s) = s
+    | otherwise =
+        case diamondsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{six = newTableau}
+                            , foundations = (foundations s){diamondsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{six = newTableau}
+                            , foundations = (foundations s){diamondsPile = tableauCard : diamondsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ six $ tableau s
+    newTableau = tail $ six $ tableau s
+
+tableauSevenToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSevenToDiamondFoundation s
+    | null (seven $ tableau s) = s
+    | otherwise =
+        case diamondsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{seven = newTableau}
+                            , foundations = (foundations s){diamondsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{seven = newTableau}
+                            , foundations = (foundations s){diamondsPile = tableauCard : diamondsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ seven $ tableau s
+    newTableau = tail $ seven $ tableau s
+
+tableauOneToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauOneToClubFoundation s
+    | null (one $ tableau s) = s
+    | otherwise =
+        case clubsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){clubsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{one = newTableau}
+                            , foundations = (foundations s){clubsPile = tableauCard : clubsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ one $ tableau s
+    newTableau = tail $ one $ tableau s
+
+tableauTwoToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauTwoToClubFoundation s
+    | null (two $ tableau s) = s
+    | otherwise =
+        case clubsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{two = newTableau}
+                            , foundations = (foundations s){clubsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{two = newTableau}
+                            , foundations = (foundations s){clubsPile = tableauCard : clubsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ two $ tableau s
+    newTableau = tail $ two $ tableau s
+
+tableauThreeToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauThreeToClubFoundation s
+    | null (three $ tableau s) = s
+    | otherwise =
+        case clubsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{three = newTableau}
+                            , foundations = (foundations s){clubsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{three = newTableau}
+                            , foundations = (foundations s){clubsPile = tableauCard : clubsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ three $ tableau s
+    newTableau = tail $ three $ tableau s
+
+tableauFourToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFourToClubFoundation s
+    | null (four $ tableau s) = s
+    | otherwise =
+        case clubsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{four = newTableau}
+                            , foundations = (foundations s){clubsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{four = newTableau}
+                            , foundations = (foundations s){clubsPile = tableauCard : clubsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ four $ tableau s
+    newTableau = tail $ four $ tableau s
+
+tableauFiveToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFiveToClubFoundation s
+    | null (five $ tableau s) = s
+    | otherwise =
+        case clubsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{five = newTableau}
+                            , foundations = (foundations s){clubsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{five = newTableau}
+                            , foundations = (foundations s){clubsPile = tableauCard : clubsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ five $ tableau s
+    newTableau = tail $ five $ tableau s
+
+tableauSixToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSixToClubFoundation s
+    | null (six $ tableau s) = s
+    | otherwise =
+        case clubsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{six = newTableau}
+                            , foundations = (foundations s){clubsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{six = newTableau}
+                            , foundations = (foundations s){clubsPile = tableauCard : clubsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ six $ tableau s
+    newTableau = tail $ six $ tableau s
+
+tableauSevenToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSevenToClubFoundation s
+    | null (seven $ tableau s) = s
+    | otherwise =
+        case clubsPile (foundations s) of
+            [] ->
+                -- if the foundation is empty, allow Ace
+                if canBuildToEmptyFoundation tableauCard
+                    then
+                        s
+                            { tableau = initTableau{seven = newTableau}
+                            , foundations = (foundations s){clubsPile = [tableauCard]}
+                            }
+                    else s
+            (f : _) ->
+                if canBuild tableauCard f
+                    then
+                        s
+                            { tableau = initTableau{seven = newTableau}
+                            , foundations = (foundations s){clubsPile = tableauCard : clubsPile (foundations s)}
+                            }
+                    else s
+  where
+    initTableau = tableau s
+    tableauCard = head $ seven $ tableau s
+    newTableau = tail $ seven $ tableau s
+
 tableauToTableau :: (Eq c, HasCard c, Show c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
 tableauToTableau fromIdx toIdx numCards s
     | canBuild fromCard toCard = s{tableau = updatedTableau}
@@ -263,34 +1091,3 @@ updateTableau fromIdx newFromBuildPile toIdx newToBuildPile t =
         , six = if fromIdx == 6 then newFromBuildPile else if toIdx == 6 then newToBuildPile else six t
         , seven = if fromIdx == 7 then newFromBuildPile else if toIdx == 7 then newToBuildPile else seven t
         }
-
-tableauOneToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
-tableauOneToHeartFoundation s
-    | null (one $ tableau s) = s
-    | otherwise =
-        case heartsPile (foundations s) of
-            [] ->
-                -- if the foundation is empty, allow Ace
-                if canBuildToEmptyFoundation tableauCard
-                    then
-                        s
-                            { tableau = initTableau{one = newTableau}
-                            , foundations = (foundations s){heartsPile = [tableauCard]}
-                            }
-                    else s
-            (f : _) ->
-                if canBuild tableauCard f
-                    then
-                        s
-                            { tableau = initTableau{one = newTableau}
-                            , foundations = (foundations s){heartsPile = tableauCard : heartsPile (foundations s)}
-                            }
-                    else s
-  where
-    initTableau = tableau s
-    tableauCard = head $ one $ tableau s
-    newTableau = tail $ one $ tableau s
-
--- Helper to allow placing an Ace on empty foundation
-canBuildToEmptyFoundation :: (HasCard c) => c -> Bool
-canBuildToEmptyFoundation c = toCard c == Card Ace Hearts
