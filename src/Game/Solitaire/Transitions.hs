@@ -335,7 +335,7 @@ tableauOneToHeartFoundation s
     tableauCard = head $ one $ tableau s
     newTableau = flipTop $ tail $ one $ tableau s
 
-tableauTwoToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauTwoToHeartFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauTwoToHeartFoundation s
     | null (two $ tableau s) = s
     | otherwise =
@@ -360,9 +360,9 @@ tableauTwoToHeartFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ two $ tableau s
-    newTableau = tail $ two $ tableau s
+    newTableau = flipTop $ tail $ two $ tableau s
 
-tableauThreeToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauThreeToHeartFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauThreeToHeartFoundation s
     | null (three $ tableau s) = s
     | otherwise =
@@ -387,9 +387,9 @@ tableauThreeToHeartFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ three $ tableau s
-    newTableau = tail $ three $ tableau s
+    newTableau = flipTop $ tail $ three $ tableau s
 
-tableauFourToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFourToHeartFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauFourToHeartFoundation s
     | null (four $ tableau s) = s
     | otherwise =
@@ -414,9 +414,9 @@ tableauFourToHeartFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ four $ tableau s
-    newTableau = tail $ four $ tableau s
+    newTableau = flipTop $ tail $ four $ tableau s
 
-tableauFiveToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFiveToHeartFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauFiveToHeartFoundation s
     | null (five $ tableau s) = s
     | otherwise =
@@ -441,9 +441,9 @@ tableauFiveToHeartFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ five $ tableau s
-    newTableau = tail $ five $ tableau s
+    newTableau = flipTop $ tail $ five $ tableau s
 
-tableauSixToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSixToHeartFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauSixToHeartFoundation s
     | null (six $ tableau s) = s
     | otherwise =
@@ -468,9 +468,9 @@ tableauSixToHeartFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ six $ tableau s
-    newTableau = tail $ six $ tableau s
+    newTableau = flipTop $ tail $ six $ tableau s
 
-tableauSevenToHeartFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSevenToHeartFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauSevenToHeartFoundation s
     | null (seven $ tableau s) = s
     | otherwise =
@@ -495,9 +495,9 @@ tableauSevenToHeartFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ seven $ tableau s
-    newTableau = tail $ seven $ tableau s
+    newTableau = flipTop $ tail $ seven $ tableau s
 
-tableauOneToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauOneToSpadeFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauOneToSpadeFoundation s
     | null (one $ tableau s) = s
     | otherwise =
@@ -522,9 +522,9 @@ tableauOneToSpadeFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ one $ tableau s
-    newTableau = tail $ one $ tableau s
+    newTableau = flipTop $ tail $ one $ tableau s
 
-tableauTwoToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauTwoToSpadeFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauTwoToSpadeFoundation s
     | null (two $ tableau s) = s
     | otherwise =
@@ -549,9 +549,9 @@ tableauTwoToSpadeFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ two $ tableau s
-    newTableau = tail $ two $ tableau s
+    newTableau = flipTop $ tail $ two $ tableau s
 
-tableauThreeToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauThreeToSpadeFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauThreeToSpadeFoundation s
     | null (three $ tableau s) = s
     | otherwise =
@@ -576,9 +576,9 @@ tableauThreeToSpadeFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ three $ tableau s
-    newTableau = tail $ three $ tableau s
+    newTableau = flipTop $ tail $ three $ tableau s
 
-tableauFourToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFourToSpadeFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauFourToSpadeFoundation s
     | null (four $ tableau s) = s
     | otherwise =
@@ -603,9 +603,9 @@ tableauFourToSpadeFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ four $ tableau s
-    newTableau = tail $ four $ tableau s
+    newTableau = flipTop $ tail $ four $ tableau s
 
-tableauFiveToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFiveToSpadeFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauFiveToSpadeFoundation s
     | null (five $ tableau s) = s
     | otherwise =
@@ -630,9 +630,9 @@ tableauFiveToSpadeFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ five $ tableau s
-    newTableau = tail $ five $ tableau s
+    newTableau = flipTop $ tail $ five $ tableau s
 
-tableauSixToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSixToSpadeFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauSixToSpadeFoundation s
     | null (six $ tableau s) = s
     | otherwise =
@@ -657,9 +657,9 @@ tableauSixToSpadeFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ six $ tableau s
-    newTableau = tail $ six $ tableau s
+    newTableau = flipTop $ tail $ six $ tableau s
 
-tableauSevenToSpadeFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSevenToSpadeFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauSevenToSpadeFoundation s
     | null (seven $ tableau s) = s
     | otherwise =
@@ -684,9 +684,9 @@ tableauSevenToSpadeFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ seven $ tableau s
-    newTableau = tail $ seven $ tableau s
+    newTableau = flipTop $ tail $ seven $ tableau s
 
-tableauOneToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauOneToDiamondFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauOneToDiamondFoundation s
     | null (one $ tableau s) = s
     | otherwise =
@@ -711,9 +711,9 @@ tableauOneToDiamondFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ one $ tableau s
-    newTableau = tail $ one $ tableau s
+    newTableau = flipTop $ tail $ one $ tableau s
 
-tableauTwoToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauTwoToDiamondFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauTwoToDiamondFoundation s
     | null (two $ tableau s) = s
     | otherwise =
@@ -738,9 +738,9 @@ tableauTwoToDiamondFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ two $ tableau s
-    newTableau = tail $ two $ tableau s
+    newTableau = flipTop $ tail $ two $ tableau s
 
-tableauThreeToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauThreeToDiamondFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauThreeToDiamondFoundation s
     | null (three $ tableau s) = s
     | otherwise =
@@ -765,9 +765,9 @@ tableauThreeToDiamondFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ three $ tableau s
-    newTableau = tail $ three $ tableau s
+    newTableau = flipTop $ tail $ three $ tableau s
 
-tableauFourToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFourToDiamondFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauFourToDiamondFoundation s
     | null (four $ tableau s) = s
     | otherwise =
@@ -792,9 +792,9 @@ tableauFourToDiamondFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ four $ tableau s
-    newTableau = tail $ four $ tableau s
+    newTableau = flipTop $ tail $ four $ tableau s
 
-tableauFiveToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFiveToDiamondFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauFiveToDiamondFoundation s
     | null (five $ tableau s) = s
     | otherwise =
@@ -819,9 +819,9 @@ tableauFiveToDiamondFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ five $ tableau s
-    newTableau = tail $ five $ tableau s
+    newTableau = flipTop $ tail $ five $ tableau s
 
-tableauSixToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSixToDiamondFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauSixToDiamondFoundation s
     | null (six $ tableau s) = s
     | otherwise =
@@ -846,9 +846,9 @@ tableauSixToDiamondFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ six $ tableau s
-    newTableau = tail $ six $ tableau s
+    newTableau = flipTop $ tail $ six $ tableau s
 
-tableauSevenToDiamondFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSevenToDiamondFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauSevenToDiamondFoundation s
     | null (seven $ tableau s) = s
     | otherwise =
@@ -873,9 +873,9 @@ tableauSevenToDiamondFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ seven $ tableau s
-    newTableau = tail $ seven $ tableau s
+    newTableau = flipTop $ tail $ seven $ tableau s
 
-tableauOneToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauOneToClubFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauOneToClubFoundation s
     | null (one $ tableau s) = s
     | otherwise =
@@ -900,9 +900,9 @@ tableauOneToClubFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ one $ tableau s
-    newTableau = tail $ one $ tableau s
+    newTableau = flipTop $ tail $ one $ tableau s
 
-tableauTwoToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauTwoToClubFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauTwoToClubFoundation s
     | null (two $ tableau s) = s
     | otherwise =
@@ -927,9 +927,9 @@ tableauTwoToClubFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ two $ tableau s
-    newTableau = tail $ two $ tableau s
+    newTableau = flipTop $ tail $ two $ tableau s
 
-tableauThreeToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauThreeToClubFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauThreeToClubFoundation s
     | null (three $ tableau s) = s
     | otherwise =
@@ -954,9 +954,9 @@ tableauThreeToClubFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ three $ tableau s
-    newTableau = tail $ three $ tableau s
+    newTableau = flipTop $ tail $ three $ tableau s
 
-tableauFourToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFourToClubFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauFourToClubFoundation s
     | null (four $ tableau s) = s
     | otherwise =
@@ -981,9 +981,9 @@ tableauFourToClubFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ four $ tableau s
-    newTableau = tail $ four $ tableau s
+    newTableau = flipTop $ tail $ four $ tableau s
 
-tableauFiveToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauFiveToClubFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauFiveToClubFoundation s
     | null (five $ tableau s) = s
     | otherwise =
@@ -1008,9 +1008,9 @@ tableauFiveToClubFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ five $ tableau s
-    newTableau = tail $ five $ tableau s
+    newTableau = flipTop $ tail $ five $ tableau s
 
-tableauSixToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSixToClubFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauSixToClubFoundation s
     | null (six $ tableau s) = s
     | otherwise =
@@ -1035,9 +1035,9 @@ tableauSixToClubFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ six $ tableau s
-    newTableau = tail $ six $ tableau s
+    newTableau = flipTop $ tail $ six $ tableau s
 
-tableauSevenToClubFoundation :: (Eq c, Show c, HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
+tableauSevenToClubFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauSevenToClubFoundation s
     | null (seven $ tableau s) = s
     | otherwise =
@@ -1062,7 +1062,7 @@ tableauSevenToClubFoundation s
   where
     initTableau = tableau s
     tableauCard = head $ seven $ tableau s
-    newTableau = tail $ seven $ tableau s
+    newTableau = flipTop $ tail $ seven $ tableau s
 
 tableauToTableau :: (Eq c, HasCard c, Show c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
 tableauToTableau fromIdx toIdx numCards s
