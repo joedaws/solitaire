@@ -204,13 +204,13 @@ stockToWaste s
 
 {- | Helper transition function.
   Moves the top stock card to the top of the waste
-  Warning cannot be used with stock is empty
+  cannot be used when stock is empty
 -}
-stockToWaste' :: (Eq c, Show c) => Solitaire c -> Solitaire c
+stockToWaste' :: (HasFace c, Eq c, Show c) => Solitaire c -> Solitaire c
 stockToWaste' s = newSolitaire
   where
     c : cs = stock s
-    newStock = cs
+    newStock = flipCard (head cs) : tail cs
     newWaste = c : waste s
     newSolitaire = s{stock = newStock, waste = newWaste}
 
