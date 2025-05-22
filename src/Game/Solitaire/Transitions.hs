@@ -208,7 +208,7 @@ stockToWaste s
   cannot be used when stock is empty
 -}
 stockToWaste' :: (HasFace c, Eq c, Show c) => Solitaire c -> Solitaire c
-stockToWaste' (Solitaire [a] w' f' t') = Solitaire [] (flipCard a:w')  f' t'
+stockToWaste' (Solitaire [a] w' f' t') = Solitaire [] (flipCard a : w') f' t'
 stockToWaste' s = newSolitaire
   where
     c : cs = stock s
