@@ -22,14 +22,14 @@ main = hspec $ do
 
   describe "Solitaire State Transitions" $ do
     it "stockToWaste when stock has cards" $ do
-      let unshuffledDeck = createDeck mkKlondikeCardUp
-      let s = setupSolitaire unshuffledDeck
-      let initFoundations = foundations s
-      let initTableau = Tableau [] [] [] [] [] [] []
-      let s = Solitaire [KlondikeCard (Card Two Hearts) Up] [] initFoundations initTableau
+      let s = Solitaire
+                [KlondikeCard (Card Five Spades) Down]    -- stock
+                []                                        -- waste
+                (Foundations [] [] [] [])                 -- all foundations empty
+                (Tableau [] [] [] [] [] [] []) -- only first tableau pile populated      let initTableau = Tableau [] [] [] [] [] [] []
       let s' = stockToWaste s
       stock s' `shouldBe` []
-      waste s' `shouldBe` [KlondikeCard (Card Two Hearts) Up]
+      waste s' `shouldBe` [KlondikeCard (Card Five Spades) Up] -- the state should change
     it "tableauOneToHeartFoundation when tableau one has a card that can move to heart foundation" $ do
       let tableauCard = KlondikeCard (Card Ace Hearts) Up
       let s = Solitaire
