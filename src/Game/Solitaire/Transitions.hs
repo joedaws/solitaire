@@ -1076,19 +1076,25 @@ tableauSevenToClubFoundation s
 -- ---------------------------
 
 tableauToTableau :: (Eq c, HasCard c, HasFace c, Show c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
-tableauToTableau fromIdx toIdx numCards s
-    | canBuild fromCard toCard = s{tableau = updatedTableau}
-    | otherwise = s
+tableauToTableau fromIdx toIdx numCards (Solitaire s' w f t)
+    | tableauIsEmpty fromIdx t = Solitaire s' w f t
+    -- | tableauIsEmpty toIdx t = Solitaire s' w f t -- TODO fix this case
+    | canBuild fromCard toCard' = Solitaire s' w f updatedTableau
+    | otherwise = Solitaire s' w f t
   where
-    t = tableau s
     fromBuildPile = getBuildPile fromIdx t
     toBuildPile = getBuildPile toIdx t
     (cardsToMove, newFromBuildPile) = splitAt numCards fromBuildPile
     newFromBuildPile' = flipTop newFromBuildPile
     fromCard = last cardsToMove
-    toCard = head toBuildPile
+    toCard' = head toBuildPile -- use ' to avoid clash with toCard from HasCard
     updatedToPile = cardsToMove ++ toBuildPile
     updatedTableau = updateTableau fromIdx newFromBuildPile' toIdx updatedToPile t
+
+tableauIsEmpty :: Int -> Tableau c -> Bool
+tableauIsEmpty fromIdx t
+    | null (getBuildPile fromIdx t) = True
+    | otherwise = False
 
 getBuildPile :: Int -> Tableau c -> BuildPile c
 getBuildPile idx tableau' = case idx of
@@ -1114,4 +1120,4 @@ updateTableau fromIdx newFromBuildPile toIdx newToBuildPile t =
         }
 
 allTableauToTableauFunctions :: (HasFace c, Show c, Eq c, HasCard c, IsPlayable c) => [Solitaire c -> Solitaire c]
-allTableauToTableauFunctions = [tableauToTableau i j n | i <- [1 .. 7], j <- [1 .. 7], i /= j, n <- [1 .. 12]]
+allTableauToTableauFunctions = [tableauToTableau i j n | i <- [1 .. 7], j <- [(i+1) .. 7], n <- [1 .. 12]]
