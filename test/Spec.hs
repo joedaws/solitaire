@@ -100,3 +100,83 @@ main = hspec $ do
                         (Tableau [c1] [] [] [c1] [] [] [])
             let s' = tableauToTableau 2 3 1 s -- move one card from t2 to t3 
             s' `shouldBe` s -- no state change expected
+        it "does nothing when more cards are moved than in tableau" $ do
+            let c1 = KlondikeCard (Card Ten Diamonds) Down
+            let c2 = KlondikeCard (Card King Spades) Down
+            let c3 = KlondikeCard (Card Queen Hearts) Down
+            let c4 = KlondikeCard (Card Jack Clubs) Down
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c1] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [c4, c3, c2] [] [] [c1] [] [] [])
+            let s' = tableauToTableau 4 1 2 s
+            s' `shouldBe` s -- no state change expected
+        it "moves one card when valid" $ do
+            let c1 = KlondikeCard (Card Five Spades) Up
+            let c2 = KlondikeCard (Card Four Hearts) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c1] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [c2] [] [] [c1] [] [] [])
+            let s' = tableauToTableau 1 4 1 s -- move one card from t1 to t4
+            four (tableau s') `shouldBe` [c2, c1] -- c2 should be on top of c1
+        it "moves two cards when valid" $ do
+            let c1 = KlondikeCard (Card Five Spades) Up
+            let c2 = KlondikeCard (Card Four Hearts) Up
+            let c3 = KlondikeCard (Card Six Diamonds) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c1] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [] [] [] [c2, c1] [] [] [c3])
+            let s' = tableauToTableau 4 7 2 s -- move two cards from t4 to t7
+            seven (tableau s') `shouldBe` [c2, c1, c3]
+        it "fails to move when more than number of Up cards" $ do
+            let c1 = KlondikeCard (Card Five Spades) Up
+            let c2 = KlondikeCard (Card Four Hearts) Up
+            let c3 = KlondikeCard (Card Six Diamonds) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c1] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [] [] [] [c2, c1] [] [] [c3])
+            let s' = tableauToTableau 4 7 8 s 
+            s' `shouldBe` s
+    describe "Solitaire State Transitions -- wasteToFoundation" $ do
+        it "does nothing when waste is empty" $ do
+            let c1 = KlondikeCard (Card Five Spades) Down
+            let s =
+                    Solitaire
+                        [c1] -- stock
+                        [] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [c1] [] [] [c1] [] [] [])
+            let s' = wasteToHeartsFoundation s
+            s' `shouldBe` s -- no state change expected
+        it "does nothing when foundation has card" $ do
+            let c1 = KlondikeCard (Card Ace Hearts) Down
+            let c2 = KlondikeCard (Card Ace Spades) Down
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c2] -- waste
+                        (Foundations [c1] [] [] [])
+                        (Tableau [] [] [] [] [] [] [])
+            let s' = wasteToHeartsFoundation s
+            s' `shouldBe` s -- no state change expected
+        it "moves Ace when Foundation is empty" $ do
+            let c1 = KlondikeCard (Card Ace Hearts) Down
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c1] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [] [] [] [] [] [] [])
+            let s' = wasteToHeartsFoundation s
+            head (heartsPile $ foundations s') `shouldBe` c1

@@ -11,6 +11,10 @@ module Game.Solitaire.Transitions (
     wasteToTableauFive,
     wasteToTableauSix,
     wasteToTableauSeven,
+    wasteToHeartsFoundation,
+    wasteToSpadesFoundation,
+    wasteToDiamondsFoundation,
+    wasteToClubsFoundation,
     tableauOneToHeartFoundation,
     tableauTwoToHeartFoundation,
     tableauThreeToHeartFoundation,
@@ -84,6 +88,10 @@ allTransitions =
     , wasteToTableauFive
     , wasteToTableauSix
     , wasteToTableauSeven
+    , wasteToHeartsFoundation
+    , wasteToSpadesFoundation
+    , wasteToDiamondsFoundation
+    , wasteToClubsFoundation
     ]
         ++ allTableauToTableauFunctions
 
@@ -296,6 +304,54 @@ wasteToTableauSeven s
 
 wasteMinusOne :: Waste c -> Waste c
 wasteMinusOne (_ : ws) = ws
+
+wasteToHeartsFoundation :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToHeartsFoundation s
+    | null $ waste s = s
+    | not $ null heartFoundation = s -- when there is someting on the pile we can't build with an Ace
+    | canBuildToEmptyHeartFoundation wasteCard = s{foundations = newFoundations}
+    | otherwise = s
+  where
+    heartFoundation = heartsPile $ foundations s
+    wasteCard = head $ waste s
+    oldFoundations = foundations s
+    newFoundations = oldFoundations{heartsPile = [wasteCard]}
+
+wasteToSpadesFoundation :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToSpadesFoundation s
+    | null $ waste s = s
+    | not $ null spadeFoundation = s -- when there is someting on the pile we can't build with an Ace
+    | canBuildToEmptySpadeFoundation wasteCard = s{foundations = newFoundations}
+    | otherwise = s
+  where
+    spadeFoundation = spadesPile $ foundations s
+    wasteCard = head $ waste s
+    oldFoundations = foundations s
+    newFoundations = oldFoundations{spadesPile = [wasteCard]}
+
+wasteToDiamondsFoundation :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToDiamondsFoundation s
+    | null $ waste s = s
+    | not $ null diamondFoundation = s -- when there is someting on the pile we can't build with an Ace
+    | canBuildToEmptyDiamondFoundation wasteCard = s{foundations = newFoundations}
+    | otherwise = s
+  where
+    diamondFoundation = diamondsPile $ foundations s
+    wasteCard = head $ waste s
+    oldFoundations = foundations s
+    newFoundations = oldFoundations{diamondsPile = [wasteCard]}
+
+wasteToClubsFoundation :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToClubsFoundation s
+    | null $ waste s = s
+    | not $ null clubFoundation = s -- when there is someting on the pile we can't build with an Ace
+    | canBuildToEmptyClubFoundation wasteCard = s{foundations = newFoundations}
+    | otherwise = s
+  where
+    clubFoundation = clubsPile $ foundations s
+    wasteCard = head $ waste s
+    oldFoundations = foundations s
+    newFoundations = oldFoundations{clubsPile = [wasteCard]}
 
 -- Helper to allow placing an Ace on empty foundation
 canBuildToEmptyHeartFoundation :: (HasCard c) => c -> Bool
@@ -1120,4 +1176,4 @@ updateTableau fromIdx newFromBuildPile toIdx newToBuildPile t =
         }
 
 allTableauToTableauFunctions :: (HasFace c, Show c, Eq c, HasCard c, IsPlayable c) => [Solitaire c -> Solitaire c]
-allTableauToTableauFunctions = [tableauToTableau i j n | i <- [1 .. 7], j <- [(i+1) .. 7], n <- [1 .. 12]]
+allTableauToTableauFunctions = [tableauToTableau i j n | i <- [1 .. 7], j <- [1 .. 7], i /= j, n <- [1 .. 13]]

@@ -8,13 +8,17 @@ import Game.Solitaire.State
 
 main :: IO ()
 main = do
+    -- to make a thoughtful solitarie game, just pass in all the 
+    -- Up Cards
     shuffledDeck <- shuffleDeck $ createDeck mkKlondikeCardDown
-    let solitaire  = setupSolitaire shuffledDeck
+    let solitaire = setupSolitaire shuffledDeck
     putStrLn "Here is a solitaire state\n"
     render $ toStrList solitaire
     putStrLn "Next possible states are\n"
-    let ss = hint solitaire
-    mapM_ print ss
-    -- putStrLn "Now two steps"
-    -- let ss' = hint2 solitaire
-    -- mapM_ print ss'
+    let hints = hintTrace solitaire
+    mapM_ renderHint (zip [1..] hints)
+
+    where
+    renderHint (n, (_f, s)) = do
+        putStrLn $ "\nHint #" ++ show n ++ ":"
+        render $ toStrList s
