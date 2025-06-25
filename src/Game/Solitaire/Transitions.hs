@@ -1134,6 +1134,7 @@ tableauSevenToClubFoundation s
 tableauToTableau :: (Eq c, HasCard c, HasFace c, Show c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
 tableauToTableau fromIdx toIdx numCards (Solitaire s' w f t)
     | tableauIsEmpty fromIdx t = Solitaire s' w f t
+    | length (faceUpCards fromBuildPile) < numCards = Solitaire s' w f t
     | tableauIsEmpty toIdx t && not (isKing fromCard) = Solitaire s' w f t
     | tableauIsEmpty toIdx t && isKing fromCard = Solitaire s' w f updatedTableau
     | canBuild fromCard toCard' = Solitaire s' w f updatedTableau
@@ -1181,3 +1182,9 @@ allTableauToTableauFunctions = [tableauToTableau i j n | i <- [1 .. 7], j <- [1 
 
 isKing :: HasCard c => c -> Bool
 isKing c = rank (toCard c) == King
+
+faceUpCards :: HasFace c => [c] -> [c]
+faceUpCards = takeWhile isFaceUp
+
+isFaceUp :: HasFace c => c -> Bool
+isFaceUp = (== Up) . toFace
