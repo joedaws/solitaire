@@ -42,9 +42,9 @@ main = hspec $ do
             stock s' `shouldBe` []
             waste s' `shouldBe` [KlondikeCard (Card Five Spades) Up] -- the state should change
         it "when stock has multiple cards" $ do
-            let c1 = KlondikeCard (Card Five Spades) Up
+            let c1 = KlondikeCard (Card Five Spades) Down
             let c2 = KlondikeCard (Card Ace Hearts) Down
-            let c2' = KlondikeCard (Card Ace Hearts) Up
+            let c1' = flipCard c1
             let s =
                     Solitaire
                         [c1, c2] -- stock
@@ -52,8 +52,8 @@ main = hspec $ do
                         (Foundations [] [] [] []) -- all foundations empty
                         (Tableau [] [] [] [] [] [] []) -- only first tableau pile populated
             let s' = stockToWaste s
-            stock s' `shouldBe` [c2'] -- now that c2 is top of stack it must be up
-            waste s' `shouldBe` [c1] -- the card was already up while on top of stock
+            stock s' `shouldBe` [c2] -- now that c2 is top of stack it must be up
+            waste s' `shouldBe` [c1'] -- the card was already up while on top of stock
     describe "Solitaire State Transitions -- tablueOneToHeartFoundation" $ do
         it "when tableau one has a card that can move to heart foundation" $ do
             let tableauCard = KlondikeCard (Card Ace Hearts) Up

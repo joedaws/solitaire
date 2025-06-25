@@ -45,6 +45,6 @@ setupSolitaire :: (Eq c, HasFace c, Show c) => Deck c -> Solitaire c
 setupSolitaire shuffledDeck = Solitaire s [] initFoundations initTableau
   where
     (tableaus, rest) = dealTableaus shuffledDeck 1 7 []
-    s = flipTop rest
+    s = rest
     initFoundations = setupFoundations
     initTableau = setupTableau tableaus

@@ -220,8 +220,8 @@ stockToWaste' (Solitaire [a] w' f' t') = Solitaire [] (flipCard a : w') f' t'
 stockToWaste' s = newSolitaire
   where
     c : cs = stock s
-    newStock = flipCard (head cs) : tail cs
-    newWaste = c : waste s
+    newStock = cs
+    newWaste = flipCard c : waste s
     newSolitaire = s{stock = newStock, waste = newWaste}
 
 {- | Helper transition function.
