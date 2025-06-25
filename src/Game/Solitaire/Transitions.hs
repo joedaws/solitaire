@@ -1134,7 +1134,8 @@ tableauSevenToClubFoundation s
 tableauToTableau :: (Eq c, HasCard c, HasFace c, Show c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
 tableauToTableau fromIdx toIdx numCards (Solitaire s' w f t)
     | tableauIsEmpty fromIdx t = Solitaire s' w f t
-    -- | tableauIsEmpty toIdx t = Solitaire s' w f t -- TODO fix this case
+    | tableauIsEmpty toIdx t && not (isKing fromCard) = Solitaire s' w f t
+    | tableauIsEmpty toIdx t && isKing fromCard = Solitaire s' w f updatedTableau
     | canBuild fromCard toCard' = Solitaire s' w f updatedTableau
     | otherwise = Solitaire s' w f t
   where
@@ -1177,3 +1178,6 @@ updateTableau fromIdx newFromBuildPile toIdx newToBuildPile t =
 
 allTableauToTableauFunctions :: (HasFace c, Show c, Eq c, HasCard c, IsPlayable c) => [Solitaire c -> Solitaire c]
 allTableauToTableauFunctions = [tableauToTableau i j n | i <- [1 .. 7], j <- [1 .. 7], i /= j, n <- [1 .. 13]]
+
+isKing :: HasCard c => c -> Bool
+isKing c = rank (toCard c) == King

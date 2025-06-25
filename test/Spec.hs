@@ -148,6 +148,27 @@ main = hspec $ do
                         (Tableau [] [] [] [c2, c1] [] [] [c3])
             let s' = tableauToTableau 4 7 8 s 
             s' `shouldBe` s
+        it "does not move non-King card to empty tableau" $ do
+            let c1 = KlondikeCard (Card Queen Hearts) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [c1] [] [] [] [] [] []) -- t1 has Queen, t2 empty
+            let s' = tableauToTableau 1 2 1 s
+            s' `shouldBe` s -- move is not allowed
+        it "allows King to move to empty tableau" $ do
+            let c1 = KlondikeCard (Card King Spades) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [c1] [] [] [] [] [] []) -- t1 has King, t2 empty
+            let s' = tableauToTableau 1 2 1 s
+            one (tableau s') `shouldBe` []         -- from pile is now empty
+            two (tableau s') `shouldBe` [c1]       -- King moved to empty t2
     describe "Solitaire State Transitions -- wasteToFoundation" $ do
         it "does nothing when waste is empty" $ do
             let c1 = KlondikeCard (Card Five Spades) Down
