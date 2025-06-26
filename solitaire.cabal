@@ -4,14 +4,14 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 
-name:           solitaire-hint
+name:           solitaire
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/joedaws/solitaire-hint#readme>
-homepage:       https://github.com/joedaws/solitaire-hint#readme
-bug-reports:    https://github.com/joedaws/solitaire-hint/issues
-author:         Joseph D. Daws Jr.
-maintainer:     joed@hey.com
-copyright:      2024
+description:    Please see the README on GitHub at <https://github.com/joedaws/solitaire#readme>
+homepage:       https://github.com/joedaws/solitaire#readme
+bug-reports:    https://github.com/joedaws/solitaire/issues
+author:         Joseph Daws Jr.
+maintainer:     jozzef@hey.com
+copyright:      2025
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
@@ -21,7 +21,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/joedaws/solitaire-hint
+  location: https://github.com/joedaws/solitaire
 
 library
   exposed-modules:
@@ -32,9 +32,9 @@ library
       Game.Solitaire.State
       Game.Solitaire.Transitions
   other-modules:
-      Paths_solitaire_hint
+      Paths_solitaire
   autogen-modules:
-      Paths_solitaire_hint
+      Paths_solitaire
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
@@ -45,12 +45,12 @@ library
     , random
   default-language: Haskell2010
 
-executable shint
+executable solitaire
   main-is: Main.hs
   other-modules:
-      Paths_solitaire_hint
+      Paths_solitaire
   autogen-modules:
-      Paths_solitaire_hint
+      Paths_solitaire
   hs-source-dirs:
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
@@ -59,16 +59,16 @@ executable shint
     , containers
     , hspec
     , random
-    , solitaire-hint
+    , solitaire
   default-language: Haskell2010
 
-test-suite solitaire-hint-test
+test-suite solitaire-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_solitaire_hint
+      Paths_solitaire
   autogen-modules:
-      Paths_solitaire_hint
+      Paths_solitaire
   hs-source-dirs:
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
@@ -77,5 +77,5 @@ test-suite solitaire-hint-test
     , containers
     , hspec
     , random
-    , solitaire-hint
+    , solitaire
   default-language: Haskell2010

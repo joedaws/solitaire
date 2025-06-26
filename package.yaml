@@ -1,10 +1,10 @@
-name:                solitaire-hint
+name:                solitaire
 version:             0.1.0.0
-github:              "joedaws/solitaire-hint"
+github:              "joedaws/solitaire"
 license:             BSD-3-Clause
-author:              "Joseph D. Daws Jr."
-maintainer:          "joed@hey.com"
-copyright:           "2024"
+author:              "Joseph Daws Jr."
+maintainer:          "jozzef@hey.com"
+copyright:           "2025"
 
 extra-source-files:
 - README.md
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/joedaws/solitaire-hint#readme>
+description:         Please see the README on GitHub at <https://github.com/joedaws/solitaire#readme>
 
 dependencies:
 - base >= 4.7 && < 5
@@ -40,7 +40,7 @@ library:
   source-dirs: src
 
 executables:
-  shint:
+  solitaire:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -48,10 +48,10 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - solitaire-hint
+    - solitaire
 
 tests:
-  solitaire-hint-test:
+  solitaire-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -59,4 +59,4 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - solitaire-hint
+    - solitaire
