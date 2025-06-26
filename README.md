@@ -4,9 +4,8 @@ A CLI for [solitaire](https://en.wikipedia.org/wiki/Patience_(game)) (Klondike).
 
 # Usage
 
-- `solitaire help` display the available functionality
-- `solitaire new` start a new game
-- `solitaire info` see information about the current game
+- The usages are of the form `solitaire <command>`
+- Use `solitaire` with no command to see available commands.
 
 # Setup
 
