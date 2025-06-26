@@ -5,7 +5,8 @@ module Action (
     help,
     helpNoMatchCommand,
     newGame,
-    showInfo
+    showInfo,
+    showHint,
 )
 where
 
@@ -17,10 +18,11 @@ import System.Console.ANSI (
     setSGR,
  )
 
-import Game.Card (mkKlondikeCardDown)
+import Game.Card (KlondikeCard, mkKlondikeCardDown)
 import Game.Deck
-import Game.Solitaire.Persist
 import Game.Solitaire.Create
+import Game.Solitaire.Hint
+import Game.Solitaire.Persist
 import Game.Solitaire.State
 
 coloredPutStr :: Color -> String -> IO ()
@@ -35,10 +37,13 @@ help = do
     putStrLn "The following commands are available:"
 
     coloredPutStr Green "  help\n"
-    putStrLn "      prints this help message."
+    putStrLn "      Prints this help message."
+
+    coloredPutStr Green "  hint\n"
+    putStrLn "      Show next possible states from the current state."
 
     coloredPutStr Green "  info\n"
-    putStrLn "      prints info about the application such file where data is saved."
+    putStrLn "      Prints info about the application such file where data is saved."
 
     coloredPutStr Green "  new\n"
     putStrLn "      Create a new game. Overwrites existing game data."
@@ -66,3 +71,13 @@ showInfo = do
     putStr "Data is persisted at: "
     putStrLn fileName
 
+showHint :: IO ()
+showHint = do
+    s <- loadState :: IO (Solitaire KlondikeCard)
+    putStrLn "Next possible states are\n"
+    let hints = hintTrace s
+    mapM_ renderHint (zip [1 ..] hints)
+  where
+    renderHint (n, (_f, s)) = do
+        putStrLn $ "\nHint #" ++ show n ++ ":"
+        render $ toStrList s
