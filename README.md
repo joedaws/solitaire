@@ -3,9 +3,10 @@
 A CLI for [solitaire](https://en.wikipedia.org/wiki/Patience_(game)) (Klondike).
 
 # Usage
-After install the `solitaire` executable call it to 
-- generate a random solitaire game
-- display all possible next states
+
+- `solitaire help` display the available functionality
+- `solitaire new` start a new game
+- `solitaire info` see information about the current game
 
 # Setup
 
@@ -13,7 +14,9 @@ After install the `solitaire` executable call it to
   `stack` and a version of `ghc`. 
 - Install appropriate versions of `ghc` and `stack` according to the 
   project files.
-- Run `stack install` to copy the `solitaire` executable to your local path.
+- Run `stack install` to copy the `solitaire` executable to local-bin.
+- From here you can either append the executable to your path or 
+  choose to include the local-bin in your path.
 
 # Game state
 
