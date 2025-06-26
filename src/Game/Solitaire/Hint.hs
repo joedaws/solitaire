@@ -1,7 +1,7 @@
 module Game.Solitaire.Hint (
     hint,
     hint2,
-    hintTrace
+    hintTrace,
 ) where
 
 import Game.Card
@@ -17,7 +17,7 @@ hint s = filter differentState allNextStates
 hintTrace :: (HasFace c, HasCard c, Eq c, Show c, IsPlayable c) => Solitaire c -> [(Solitaire c -> Solitaire c, Solitaire c)]
 hintTrace s = filter differentStateWithFn nextStatesWithFns
   where
-    nextStatesWithFns = [ (f, f s) | f <- allTransitions ]
+    nextStatesWithFns = [(f, f s) | f <- allTransitions]
     differentStateWithFn (_, s') = s /= s'
 
 hint2 :: (HasFace c, HasCard c, Eq c, Show c, IsPlayable c) => Solitaire c -> [Solitaire c]

@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Game.Solitaire.State (
@@ -13,7 +14,9 @@ module Game.Solitaire.State (
     flipTop,
 ) where
 
+import Data.Binary (Binary (..))
 import Data.List (intercalate)
+import GHC.Generics (Generic)
 import Game.Card
 
 -- Synonyms for different list of Cards
@@ -34,7 +37,9 @@ data Foundations c = Foundations
     , clubsPile :: SuitPile c
     , spadesPile :: SuitPile c
     }
-    deriving (Eq, Show)
+    deriving (Eq, Show, Generic)
+
+instance (Binary c) => Binary (Foundations c)
 
 data Tableau c = Tableau
     { one :: BuildPile c
@@ -45,20 +50,24 @@ data Tableau c = Tableau
     , six :: BuildPile c
     , seven :: BuildPile c
     }
-    deriving (Eq, Show)
+    deriving (Eq, Show, Generic)
+
+instance (Binary c) => Binary (Tableau c)
 
 -- There are seven Build piles in the Tableau
 -- Each pile is labeled 1 through 7
 -- type Tableau = [(Int, BuildPile)]
 
 -- The full game state
-data (Eq c, Show c) => Solitaire c = Solitaire
+data Solitaire c = Solitaire
     { stock :: Stock c
     , waste :: Waste c
     , foundations :: Foundations c
     , tableau :: Tableau c
     }
-    deriving (Eq)
+    deriving (Eq, Generic)
+
+instance (Binary c) => Binary (Solitaire c)
 
 instance (Eq c, Show c) => Show (Solitaire c) where
     show s = intercalate "\n" (toStrList s)

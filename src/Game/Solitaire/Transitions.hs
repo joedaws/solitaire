@@ -1180,11 +1180,11 @@ updateTableau fromIdx newFromBuildPile toIdx newToBuildPile t =
 allTableauToTableauFunctions :: (HasFace c, Show c, Eq c, HasCard c, IsPlayable c) => [Solitaire c -> Solitaire c]
 allTableauToTableauFunctions = [tableauToTableau i j n | i <- [1 .. 7], j <- [1 .. 7], i /= j, n <- [1 .. 13]]
 
-isKing :: HasCard c => c -> Bool
+isKing :: (HasCard c) => c -> Bool
 isKing c = rank (toCard c) == King
 
-faceUpCards :: HasFace c => [c] -> [c]
+faceUpCards :: (HasFace c) => [c] -> [c]
 faceUpCards = takeWhile isFaceUp
 
-isFaceUp :: HasFace c => c -> Bool
+isFaceUp :: (HasFace c) => c -> Bool
 isFaceUp = (== Up) . toFace
