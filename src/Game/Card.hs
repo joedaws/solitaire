@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Game.Card (
     HasCard (..),
     HasFace (..),
@@ -15,6 +17,9 @@ module Game.Card (
     mkKlondikeCardUp,
 ) where
 
+import Data.Binary (Binary)
+import GHC.Generics (Generic)
+
 class HasCard a where
     toCard :: a -> Card
 
@@ -30,7 +35,9 @@ data Suit
     | Diamonds
     | Clubs
     | Spades
-    deriving (Enum, Bounded, Eq)
+    deriving (Enum, Bounded, Eq, Generic)
+
+instance Binary Suit
 
 instance Show Suit where
     show s = case s of
@@ -53,7 +60,9 @@ data Rank
     | Jack
     | Queen
     | King
-    deriving (Enum, Bounded, Eq, Ord)
+    deriving (Enum, Bounded, Eq, Ord, Generic)
+
+instance Binary Rank
 
 instance Show Rank where
     show r = case r of
@@ -76,7 +85,9 @@ data Card = Card
     { rank :: Rank
     , suit :: Suit
     }
-    deriving (Eq)
+    deriving (Eq, Generic)
+
+instance Binary Card
 
 instance Show Card where
     show (Card r s) = show r ++ show s
@@ -84,13 +95,17 @@ instance Show Card where
 instance HasCard Card where
     toCard = id
 
-data Face = Up | Down deriving (Show, Eq)
+data Face = Up | Down deriving (Show, Eq, Generic)
+
+instance Binary Face
 
 data KlondikeCard = KlondikeCard
     { card :: Card
     , face :: Face
     }
-    deriving (Eq)
+    deriving (Eq, Generic)
+
+instance Binary KlondikeCard
 
 instance Show KlondikeCard where
     show (KlondikeCard _ Down) = "**"

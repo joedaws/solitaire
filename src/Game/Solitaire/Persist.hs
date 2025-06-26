@@ -1,4 +1,4 @@
-module Game.Solitaire.Persist (saveState, loadState) where
+module Game.Solitaire.Persist (saveState, loadState, getSavePath) where
 
 import Data.Binary (Binary (..), decodeFile, encodeFile)
 import System.Directory (XdgDirectory (..), createDirectoryIfMissing, getXdgDirectory)
@@ -14,6 +14,6 @@ loadState = getSavePath >>= decodeFile
 
 getSavePath :: IO FilePath
 getSavePath = do
-    dir <- getXdgDirectory XdgData "solitaire-game"
+    dir <- getXdgDirectory XdgData "solitaire"
     createDirectoryIfMissing True dir
     pure $ dir </> "solitaire.save"
