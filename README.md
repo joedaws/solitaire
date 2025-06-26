@@ -1,9 +1,9 @@
-# solitaire-hint
+# solitaire
 
-A CLI for solitaire hints written in Haskell.
+A CLI for [solitaire](https://en.wikipedia.org/wiki/Patience_(game)) (Klondike).
 
 # Usage
-After install the `shint` executable call it to 
+After install the `solitaire` executable call it to 
 - generate a random solitaire game
 - display all possible next states
 
@@ -13,7 +13,7 @@ After install the `shint` executable call it to
   `stack` and a version of `ghc`. 
 - Install appropriate versions of `ghc` and `stack` according to the 
   project files.
-- Run `stack install` to copy the `shint` executable to your local path.
+- Run `stack install` to copy the `solitaire` executable to your local path.
 
 # Game state
 
@@ -28,7 +28,7 @@ After install the `shint` executable call it to
 **||9C
 
 ```
-- `**` Represents a card with hidden state
+- `**` Represents a card with hidden state a.k.a. a face down card.
 - `-C` Represents an empty foundation for the club suit.
 
 ## Suits
