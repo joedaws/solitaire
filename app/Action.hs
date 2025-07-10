@@ -7,6 +7,7 @@ module Action (
     newGame,
     showInfo,
     showHint,
+    showGame,
 )
 where
 
@@ -48,6 +49,9 @@ help = do
     coloredPutStr Green "  new\n"
     putStrLn "      Create a new game. Overwrites existing game data."
 
+    coloredPutStr Green "  show\n"
+    putStrLn "      Display the current game state."
+
 helpNoMatchCommand :: String -> IO ()
 helpNoMatchCommand cmd = do
     putStr "ERROR: "
@@ -81,3 +85,9 @@ showHint = do
     renderHint (n, (name, state)) = do
         coloredPutStr Cyan $ "Hint #" ++ show n ++ ": " ++ name ++ "\n"
         render $ toStrList state
+
+showGame :: IO ()
+showGame = do
+    s <- loadState :: IO (Solitaire KlondikeCard)
+    coloredPutStr Cyan "The current game state is \n"
+    render $ toStrList s
