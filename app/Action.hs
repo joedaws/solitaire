@@ -75,9 +75,9 @@ showHint :: IO ()
 showHint = do
     s <- loadState :: IO (Solitaire KlondikeCard)
     putStrLn "Next possible states are\n"
-    let hints = hintTrace s
+    let hints = hint s
     mapM_ renderHint (zip [1 ..] hints)
   where
-    renderHint (n, (_f, s)) = do
-        putStrLn $ "\nHint #" ++ show n ++ ":"
-        render $ toStrList s
+    renderHint (n, (name, state)) = do
+        coloredPutStr Cyan $ "Hint #" ++ show n ++ ": " ++ name ++ "\n"
+        render $ toStrList state

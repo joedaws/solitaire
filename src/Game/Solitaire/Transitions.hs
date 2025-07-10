@@ -1,5 +1,6 @@
 -- | functions to represent transitions in state
 module Game.Solitaire.Transitions (
+    NamedTransition(..),
     allTransitions,
     canBuild,
     stockToWaste,
@@ -49,51 +50,59 @@ module Game.Solitaire.Transitions (
 import Game.Card
 import Game.Solitaire.State
 
-allTransitions :: (IsPlayable c, HasCard c, HasFace c, Eq c, Show c) => [Solitaire c -> Solitaire c]
+data NamedTransition c = NamedTransition {
+    name :: String
+    , apply :: Solitaire c -> Solitaire c
+}
+
+allTransitions :: (IsPlayable c, HasCard c, HasFace c, Eq c, Show c) => [NamedTransition c]
 allTransitions =
-    [ refreshStock
-    , stockToWaste
-    , tableauOneToHeartFoundation
-    , tableauTwoToHeartFoundation
-    , tableauThreeToHeartFoundation
-    , tableauFourToHeartFoundation
-    , tableauFiveToHeartFoundation
-    , tableauSixToHeartFoundation
-    , tableauSevenToHeartFoundation
-    , tableauOneToSpadeFoundation
-    , tableauTwoToSpadeFoundation
-    , tableauThreeToSpadeFoundation
-    , tableauFourToSpadeFoundation
-    , tableauFiveToSpadeFoundation
-    , tableauSixToSpadeFoundation
-    , tableauSevenToSpadeFoundation
-    , tableauOneToDiamondFoundation
-    , tableauTwoToDiamondFoundation
-    , tableauThreeToDiamondFoundation
-    , tableauFourToDiamondFoundation
-    , tableauFiveToDiamondFoundation
-    , tableauSixToDiamondFoundation
-    , tableauSevenToDiamondFoundation
-    , tableauOneToClubFoundation
-    , tableauTwoToClubFoundation
-    , tableauThreeToClubFoundation
-    , tableauFourToClubFoundation
-    , tableauFiveToClubFoundation
-    , tableauSixToClubFoundation
-    , tableauSevenToClubFoundation
-    , wasteToTableauOne
-    , wasteToTableauTwo
-    , wasteToTableauThree
-    , wasteToTableauFour
-    , wasteToTableauFive
-    , wasteToTableauSix
-    , wasteToTableauSeven
-    , wasteToHeartsFoundation
-    , wasteToSpadesFoundation
-    , wasteToDiamondsFoundation
-    , wasteToClubsFoundation
+    [ NamedTransition "refreshStock" refreshStock
+    , NamedTransition "stockToWaste" stockToWaste
+    , NamedTransition "tableauOneToHeartFoundation" tableauOneToHeartFoundation
+    , NamedTransition "tableauTwoToHeartFoundation" tableauTwoToHeartFoundation
+    , NamedTransition "tableauThreeToHeartFoundation" tableauThreeToHeartFoundation
+    , NamedTransition "tableauFourToHeartFoundation" tableauFourToHeartFoundation
+    , NamedTransition "tableauFiveToHeartFoundation" tableauFiveToHeartFoundation
+    , NamedTransition "tableauSixToHeartFoundation" tableauSixToHeartFoundation
+    , NamedTransition "tableauSevenToHeartFoundation" tableauSevenToHeartFoundation
+    , NamedTransition "tableauOneToSpadeFoundation" tableauOneToSpadeFoundation
+    , NamedTransition "tableauTwoToSpadeFoundation" tableauTwoToSpadeFoundation
+    , NamedTransition "tableauThreeToSpadeFoundation" tableauThreeToSpadeFoundation
+    , NamedTransition "tableauFourToSpadeFoundation" tableauFourToSpadeFoundation
+    , NamedTransition "tableauFiveToSpadeFoundation" tableauFiveToSpadeFoundation
+    , NamedTransition "tableauSixToSpadeFoundation" tableauSixToSpadeFoundation
+    , NamedTransition "tableauSevenToSpadeFoundation" tableauSevenToSpadeFoundation
+    , NamedTransition "tableauOneToDiamondFoundation" tableauOneToDiamondFoundation
+    , NamedTransition "tableauTwoToDiamondFoundation" tableauTwoToDiamondFoundation
+    , NamedTransition "tableauThreeToDiamondFoundation" tableauThreeToDiamondFoundation
+    , NamedTransition "tableauFourToDiamondFoundation" tableauFourToDiamondFoundation
+    , NamedTransition "tableauFiveToDiamondFoundation" tableauFiveToDiamondFoundation
+    , NamedTransition "tableauSixToDiamondFoundation" tableauSixToDiamondFoundation
+    , NamedTransition "tableauSevenToDiamondFoundation" tableauSevenToDiamondFoundation
+    , NamedTransition "tableauOneToClubFoundation" tableauOneToClubFoundation
+    , NamedTransition "tableauTwoToClubFoundation" tableauTwoToClubFoundation
+    , NamedTransition "tableauThreeToClubFoundation" tableauThreeToClubFoundation
+    , NamedTransition "tableauFourToClubFoundation" tableauFourToClubFoundation
+    , NamedTransition "tableauFiveToClubFoundation" tableauFiveToClubFoundation
+    , NamedTransition "tableauSixToClubFoundation" tableauSixToClubFoundation
+    , NamedTransition "tableauSevenToClubFoundation" tableauSevenToClubFoundation
+    , NamedTransition "wasteToTableauOne" wasteToTableauOne
+    , NamedTransition "wasteToTableauTwo" wasteToTableauTwo
+    , NamedTransition "wasteToTableauThree" wasteToTableauThree
+    , NamedTransition "wasteToTableauFour" wasteToTableauFour
+    , NamedTransition "wasteToTableauFive" wasteToTableauFive
+    , NamedTransition "wasteToTableauSix" wasteToTableauSix
+    , NamedTransition "wasteToTableauSeven" wasteToTableauSeven
+    , NamedTransition "wasteToHeartsFoundation" wasteToHeartsFoundation
+    , NamedTransition "wasteToSpadesFoundation" wasteToSpadesFoundation
+    , NamedTransition "wasteToDiamondsFoundation" wasteToDiamondsFoundation
+    , NamedTransition "wasteToClubsFoundation" wasteToClubsFoundation
     ]
-        ++ allTableauToTableauFunctions
+    ++ [ NamedTransition ("tableau" ++ show i ++ "To" ++ show j ++ "_" ++ show n)
+         (tableauToTableau i j n)
+       | i <- [1 .. 7], j <- [1 .. 7], i /= j, n <- [1 .. 13]
+       ]
 
 canBuildCard :: Card -> Card -> Bool
 canBuildCard (Card Ace Hearts) (Card Two Clubs) = True
