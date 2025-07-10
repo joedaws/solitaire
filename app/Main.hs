@@ -2,9 +2,9 @@ module Main (main) where
 
 import System.Environment
 
-import Action (help, helpNoMatchCommand, newGame, showHint, showInfo, showGame)
+import Action (help, helpNoMatchCommand, newGame, showHint, showInfo, showGame, move)
 
-data Command = Help | HelpNoMatch String | New | Info | Hint | Show
+data Command = Help | HelpNoMatch String | New | Info | Hint | Show | Move
 
 {- | The first word is a command and the rest is the argument
   of the command.
@@ -17,6 +17,7 @@ parseArgs (x : xs) = case x of
     "new" -> (New, xs)
     "hint" -> (Hint, xs)
     "show" -> (Show, xs)
+    "move" -> (Move, xs)
     _ -> (HelpNoMatch x, xs)
 
 main :: IO ()
@@ -30,3 +31,4 @@ main = do
         Info -> showInfo
         Hint -> showHint
         Show -> showGame
+        Move -> move $ head rest

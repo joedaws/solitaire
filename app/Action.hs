@@ -8,6 +8,7 @@ module Action (
     showInfo,
     showHint,
     showGame,
+    move,
 )
 where
 
@@ -25,6 +26,7 @@ import Game.Solitaire.Create
 import Game.Solitaire.Hint
 import Game.Solitaire.Persist
 import Game.Solitaire.State
+import Game.Solitaire.Transitions (lookupTransition)
 
 coloredPutStr :: Color -> String -> IO ()
 coloredPutStr color msg = do
@@ -48,6 +50,9 @@ help = do
 
     coloredPutStr Green "  new\n"
     putStrLn "      Create a new game. Overwrites existing game data."
+
+    coloredPutStr Green "  move {transition name}\n"
+    putStrLn "      Update the game state by making a move."
 
     coloredPutStr Green "  show\n"
     putStrLn "      Display the current game state."
@@ -91,3 +96,16 @@ showGame = do
     s <- loadState :: IO (Solitaire KlondikeCard)
     coloredPutStr Cyan "The current game state is \n"
     render $ toStrList s
+
+move :: String -> IO ()
+move n = do
+    s <- loadState :: IO (Solitaire KlondikeCard)
+    case lookupTransition n of
+        Just f -> do
+            let s' = f s
+            coloredPutStr Cyan $ "Applied transition: " ++ n
+            saveState s'
+            render $ toStrList s'
+        Nothing -> do
+            coloredPutStr Cyan $ "No such transition: " ++ n
+    

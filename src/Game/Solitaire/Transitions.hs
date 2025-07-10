@@ -2,6 +2,7 @@
 module Game.Solitaire.Transitions (
     NamedTransition(..),
     allTransitions,
+    lookupTransition,
     canBuild,
     stockToWaste,
     refreshStock,
@@ -46,6 +47,8 @@ module Game.Solitaire.Transitions (
     tableauSevenToClubFoundation,
     tableauToTableau,
 ) where
+
+import qualified Data.Map.Strict as Map
 
 import Game.Card
 import Game.Solitaire.State
@@ -103,6 +106,12 @@ allTransitions =
          (tableauToTableau i j n)
        | i <- [1 .. 7], j <- [1 .. 7], i /= j, n <- [1 .. 13]
        ]
+
+transitionMap :: (Show c, Eq c, HasCard c, IsPlayable c, HasFace c) => Map.Map String (Solitaire c -> Solitaire c)
+transitionMap = Map.fromList [(name nt, apply nt) | nt <- allTransitions]
+
+lookupTransition :: (Show c, Eq c, HasCard c, IsPlayable c, HasFace c) => String -> Maybe (Solitaire c -> Solitaire c)
+lookupTransition = (`Map.lookup` transitionMap)
 
 canBuildCard :: Card -> Card -> Bool
 canBuildCard (Card Ace Hearts) (Card Two Clubs) = True
