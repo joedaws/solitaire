@@ -103,7 +103,7 @@ move n = do
     case lookupTransition n of
         Just f -> do
             let s' = f s
-            coloredPutStr Cyan $ "Applied transition: " ++ n
+            coloredPutStr Cyan $ "Applied transition: " ++ n ++ "\n"
             saveState s'
             render $ toStrList s'
         Nothing -> do
