@@ -384,6 +384,14 @@ canBuildToEmptyDiamondFoundation c = toCard c == Card Ace Diamonds
 canBuildToEmptyClubFoundation :: (HasCard c) => c -> Bool
 canBuildToEmptyClubFoundation c = toCard c == Card Ace Clubs
 
+isOneMoreThan :: Rank -> Rank -> Bool
+isOneMoreThan a b = fromEnum a == fromEnum b + 1
+
+canBuildFoundation :: (HasCard a, HasCard b, IsPlayable a, IsPlayable b) => a -> b -> Bool
+canBuildFoundation a b
+    | isPlayable a = (suit (toCard a) == suit (toCard b)) && isOneMoreThan (rank (toCard a)) (rank (toCard b))
+    | otherwise = False
+
 tableauOneToHeartFoundation :: (Eq c, Show c, HasCard c, HasFace c, IsPlayable c) => Solitaire c -> Solitaire c
 tableauOneToHeartFoundation s
     | null (one $ tableau s) = s
@@ -399,7 +407,7 @@ tableauOneToHeartFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{one = newTableau}
@@ -426,7 +434,7 @@ tableauTwoToHeartFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{two = newTableau}
@@ -453,7 +461,7 @@ tableauThreeToHeartFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{three = newTableau}
@@ -480,7 +488,7 @@ tableauFourToHeartFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{four = newTableau}
@@ -507,7 +515,7 @@ tableauFiveToHeartFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{five = newTableau}
@@ -534,7 +542,7 @@ tableauSixToHeartFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{six = newTableau}
@@ -561,7 +569,7 @@ tableauSevenToHeartFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{seven = newTableau}
@@ -588,7 +596,7 @@ tableauOneToSpadeFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{one = newTableau}
@@ -615,7 +623,7 @@ tableauTwoToSpadeFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{two = newTableau}
@@ -642,7 +650,7 @@ tableauThreeToSpadeFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{three = newTableau}
@@ -669,7 +677,7 @@ tableauFourToSpadeFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{four = newTableau}
@@ -696,7 +704,7 @@ tableauFiveToSpadeFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{five = newTableau}
@@ -723,7 +731,7 @@ tableauSixToSpadeFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{six = newTableau}
@@ -750,7 +758,7 @@ tableauSevenToSpadeFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{seven = newTableau}
@@ -777,7 +785,7 @@ tableauOneToDiamondFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{one = newTableau}
@@ -804,7 +812,7 @@ tableauTwoToDiamondFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{two = newTableau}
@@ -831,7 +839,7 @@ tableauThreeToDiamondFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{three = newTableau}
@@ -858,7 +866,7 @@ tableauFourToDiamondFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{four = newTableau}
@@ -885,7 +893,7 @@ tableauFiveToDiamondFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{five = newTableau}
@@ -912,7 +920,7 @@ tableauSixToDiamondFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{six = newTableau}
@@ -939,7 +947,7 @@ tableauSevenToDiamondFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{seven = newTableau}
@@ -966,7 +974,7 @@ tableauOneToClubFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{one = newTableau}
@@ -993,7 +1001,7 @@ tableauTwoToClubFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{two = newTableau}
@@ -1020,7 +1028,7 @@ tableauThreeToClubFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{three = newTableau}
@@ -1047,7 +1055,7 @@ tableauFourToClubFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{four = newTableau}
@@ -1074,7 +1082,7 @@ tableauFiveToClubFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{five = newTableau}
@@ -1101,7 +1109,7 @@ tableauSixToClubFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{six = newTableau}
@@ -1128,7 +1136,7 @@ tableauSevenToClubFoundation s
                             }
                     else s
             (f : _) ->
-                if canBuild tableauCard f
+                if canBuildFoundation tableauCard f
                     then
                         s
                             { tableau = initTableau{seven = newTableau}

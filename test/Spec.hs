@@ -201,3 +201,53 @@ main = hspec $ do
                         (Tableau [] [] [] [] [] [] [])
             let s' = wasteToHeartsFoundation s
             head (heartsPile $ foundations s') `shouldBe` c1
+    describe "Solitaire State Transitions -- TableauNToHeartFoundation" $ do
+        it "does nothing when tableau is empty" $ do
+            let c1 = KlondikeCard (Card Ace Hearts) Up
+            let c2 = KlondikeCard (Card Ace Spades) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [] -- waste
+                        (Foundations [c1] [] [] [c2])
+                        (Tableau [] [] [] [] [] [] [])
+            let sOne = tableauOneToHeartFoundation s
+            sOne `shouldBe` s -- no state change expected
+            let sTwo = tableauTwoToHeartFoundation s
+            sTwo `shouldBe` s -- no state change expected
+            let sThree = tableauThreeToHeartFoundation s
+            sThree `shouldBe` s -- no state change expected
+            let sFour = tableauFourToHeartFoundation s
+            sFour `shouldBe` s -- no state change expected
+            let sFive = tableauFiveToHeartFoundation s
+            sFive `shouldBe` s -- no state change expected
+            let sSix = tableauSixToHeartFoundation s
+            sSix `shouldBe` s -- no state change expected
+            let sSeven = tableauSevenToHeartFoundation s
+            sSeven `shouldBe` s -- no state change expected
+        it "moves card from tableau to foundation" $ do
+            let c1 = KlondikeCard (Card Ace Hearts) Up
+            let c2 = KlondikeCard (Card Ace Spades) Up
+            let c3 = KlondikeCard (Card Two Hearts) Up
+            let c4 = KlondikeCard (Card Two Spades) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [] -- waste
+                        (Foundations [c1] [] [] [c2])
+                        (Tableau [c3] [] [] [] [c4] [] [])
+            let sHeart = tableauOneToHeartFoundation s
+            head (heartsPile $ foundations sHeart)`shouldBe` c3
+            let sSpade = tableauFiveToSpadeFoundation s
+            head (spadesPile $ foundations sSpade)`shouldBe` c4
+        it "does nothing when card can't be played" $ do
+            let c1 = KlondikeCard (Card Ace Hearts) Up
+            let c2 = KlondikeCard (Card Three Hearts) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [] -- waste
+                        (Foundations [c1] [] [] [])
+                        (Tableau [c2] [] [] [] [] [] [])
+            let s' = tableauOneToHeartFoundation s
+            s' `shouldBe` s
