@@ -2,7 +2,7 @@ module Main (main) where
 
 import System.Environment
 
-import Action (help, helpNoMatchCommand, newGame, showHint, showInfo, showGame, move)
+import Action (help, helpNoMatchCommand, move, newGame, showGame, showHint, showInfo)
 
 data Command = Help | HelpNoMatch String | New | Info | Hint | Show | Move
 

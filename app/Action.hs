@@ -108,4 +108,3 @@ move n = do
             render $ toStrList s'
         Nothing -> do
             coloredPutStr Cyan $ "No such transition: " ++ n
-    

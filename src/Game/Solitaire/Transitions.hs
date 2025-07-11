@@ -1,6 +1,6 @@
 -- | functions to represent transitions in state
 module Game.Solitaire.Transitions (
-    NamedTransition(..),
+    NamedTransition (..),
     allTransitions,
     lookupTransition,
     canBuild,
@@ -53,10 +53,10 @@ import qualified Data.Map.Strict as Map
 import Game.Card
 import Game.Solitaire.State
 
-data NamedTransition c = NamedTransition {
-    name :: String
+data NamedTransition c = NamedTransition
+    { name :: String
     , apply :: Solitaire c -> Solitaire c
-}
+    }
 
 allTransitions :: (IsPlayable c, HasCard c, HasFace c, Eq c, Show c) => [NamedTransition c]
 allTransitions =
@@ -102,10 +102,14 @@ allTransitions =
     , NamedTransition "wasteToDiamondsFoundation" wasteToDiamondsFoundation
     , NamedTransition "wasteToClubsFoundation" wasteToClubsFoundation
     ]
-    ++ [ NamedTransition ("tableau" ++ show i ++ "To" ++ show j ++ "_" ++ show n)
-         (tableauToTableau i j n)
-       | i <- [1 .. 7], j <- [1 .. 7], i /= j, n <- [1 .. 13]
-       ]
+        ++ [ NamedTransition
+            ("tableau" ++ show i ++ "To" ++ show j ++ "_" ++ show n)
+            (tableauToTableau i j n)
+           | i <- [1 .. 7]
+           , j <- [1 .. 7]
+           , i /= j
+           , n <- [1 .. 13]
+           ]
 
 transitionMap :: (Show c, Eq c, HasCard c, IsPlayable c, HasFace c) => Map.Map String (Solitaire c -> Solitaire c)
 transitionMap = Map.fromList [(name nt, apply nt) | nt <- allTransitions]
@@ -328,7 +332,7 @@ wasteToHeartsFoundation :: (HasCard c, IsPlayable c) => Solitaire c -> Solitaire
 wasteToHeartsFoundation s
     | null $ waste s = s
     | canBuildToEmptyHeartFoundation (head $ waste s) = s{foundations = oldFoundations{heartsPile = [head $ waste s]}, waste = wasteRemain}
-    | not (null heartFoundation) && canBuildFoundation (head $ waste s) (head heartFoundation) = s{foundations = oldFoundations{heartsPile = head ( waste s):heartFoundation}, waste = wasteRemain}
+    | not (null heartFoundation) && canBuildFoundation (head $ waste s) (head heartFoundation) = s{foundations = oldFoundations{heartsPile = head (waste s) : heartFoundation}, waste = wasteRemain}
     | otherwise = s
   where
     heartFoundation = heartsPile $ foundations s
@@ -339,7 +343,7 @@ wasteToSpadesFoundation :: (HasCard c, IsPlayable c) => Solitaire c -> Solitaire
 wasteToSpadesFoundation s
     | null $ waste s = s
     | canBuildToEmptySpadeFoundation (head $ waste s) = s{foundations = oldFoundations{spadesPile = [head $ waste s]}, waste = wasteRemain}
-    | not (null spadeFoundation) && canBuildFoundation (head $ waste s) (head spadeFoundation) = s{foundations = oldFoundations{spadesPile = head ( waste s):spadeFoundation}, waste = wasteRemain}
+    | not (null spadeFoundation) && canBuildFoundation (head $ waste s) (head spadeFoundation) = s{foundations = oldFoundations{spadesPile = head (waste s) : spadeFoundation}, waste = wasteRemain}
     | otherwise = s
   where
     spadeFoundation = spadesPile $ foundations s
@@ -350,7 +354,7 @@ wasteToDiamondsFoundation :: (HasCard c, IsPlayable c) => Solitaire c -> Solitai
 wasteToDiamondsFoundation s
     | null $ waste s = s
     | canBuildToEmptyDiamondFoundation (head $ waste s) = s{foundations = oldFoundations{diamondsPile = [head $ waste s]}, waste = wasteRemain}
-    | not (null diamondFoundation) && canBuildFoundation (head $ waste s) (head diamondFoundation) = s{foundations = oldFoundations{diamondsPile = head ( waste s):diamondFoundation}, waste = wasteRemain}
+    | not (null diamondFoundation) && canBuildFoundation (head $ waste s) (head diamondFoundation) = s{foundations = oldFoundations{diamondsPile = head (waste s) : diamondFoundation}, waste = wasteRemain}
     | otherwise = s
   where
     diamondFoundation = diamondsPile $ foundations s
@@ -361,7 +365,7 @@ wasteToClubsFoundation :: (HasCard c, IsPlayable c) => Solitaire c -> Solitaire 
 wasteToClubsFoundation s
     | null $ waste s = s
     | canBuildToEmptyClubFoundation (head $ waste s) = s{foundations = oldFoundations{clubsPile = [head $ waste s]}, waste = wasteRemain}
-    | not (null clubFoundation) && canBuildFoundation (head $ waste s) (head clubFoundation) = s{foundations = oldFoundations{clubsPile = head ( waste s):clubFoundation}, waste = wasteRemain}
+    | not (null clubFoundation) && canBuildFoundation (head $ waste s) (head clubFoundation) = s{foundations = oldFoundations{clubsPile = head (waste s) : clubFoundation}, waste = wasteRemain}
     | otherwise = s
   where
     clubFoundation = clubsPile $ foundations s
