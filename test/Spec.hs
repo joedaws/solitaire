@@ -251,3 +251,47 @@ main = hspec $ do
                         (Tableau [c2] [] [] [] [] [] [])
             let s' = tableauOneToHeartFoundation s
             s' `shouldBe` s
+    describe "Solitaire State Transitions -- wasteToSuitFoundation" $ do
+        it "does nothing when foundaiton is empty and no Ace is playable" $ do
+            let c1 = KlondikeCard (Card Three Hearts) Up
+            let c2 = KlondikeCard (Card Two Spades) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c2, c1] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [] [] [] [] [] [] [])
+            let sHearts = wasteToHeartsFoundation s
+            sHearts `shouldBe` s -- no state change expected
+            let sDiamonds = wasteToDiamondsFoundation s
+            sDiamonds `shouldBe` s -- no state change expected
+            let sClubs = wasteToClubsFoundation s
+            sClubs `shouldBe` s -- no state change expected
+            let sSpades = wasteToSpadesFoundation s
+            sSpades `shouldBe` s -- no state change expected
+        it "moves card from waste to foundation" $ do
+            let c1 = KlondikeCard (Card Ace Hearts) Up
+            let c2 = KlondikeCard (Card Two Hearts) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c1, c2] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [] [] [] [] [] [] [])
+            let s' = wasteToHeartsFoundation s
+            head (heartsPile $ foundations s') `shouldBe` c1
+            head (waste s') `shouldBe` c2
+            let s'' = wasteToHeartsFoundation s'
+            head (heartsPile $ foundations s'') `shouldBe` c2
+            waste s'' `shouldBe` []
+        it "does nothing when card can't be played" $ do
+            let c1 = KlondikeCard (Card Ace Hearts) Up
+            let c2 = KlondikeCard (Card Three Hearts) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c2] -- waste
+                        (Foundations [c1] [] [] [])
+                        (Tableau [] [] [] [] [] [] [])
+            let s' = wasteToHeartsFoundation s
+            s' `shouldBe` s

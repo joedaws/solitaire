@@ -321,55 +321,52 @@ wasteToTableauSeven s
     newTableau = seven initTableau
 
 wasteMinusOne :: Waste c -> Waste c
+wasteMinusOne [] = []
 wasteMinusOne (_ : ws) = ws
 
-wasteToHeartsFoundation :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToHeartsFoundation :: (HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToHeartsFoundation s
     | null $ waste s = s
-    | not $ null heartFoundation = s -- when there is someting on the pile we can't build with an Ace
-    | canBuildToEmptyHeartFoundation wasteCard = s{foundations = newFoundations}
+    | canBuildToEmptyHeartFoundation (head $ waste s) = s{foundations = oldFoundations{heartsPile = [head $ waste s]}, waste = wasteRemain}
+    | not (null heartFoundation) && canBuildFoundation (head $ waste s) (head heartFoundation) = s{foundations = oldFoundations{heartsPile = head ( waste s):heartFoundation}, waste = wasteRemain}
     | otherwise = s
   where
     heartFoundation = heartsPile $ foundations s
-    wasteCard = head $ waste s
+    wasteRemain = wasteMinusOne $ waste s
     oldFoundations = foundations s
-    newFoundations = oldFoundations{heartsPile = [wasteCard]}
 
-wasteToSpadesFoundation :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToSpadesFoundation :: (HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToSpadesFoundation s
     | null $ waste s = s
-    | not $ null spadeFoundation = s -- when there is someting on the pile we can't build with an Ace
-    | canBuildToEmptySpadeFoundation wasteCard = s{foundations = newFoundations}
+    | canBuildToEmptySpadeFoundation (head $ waste s) = s{foundations = oldFoundations{spadesPile = [head $ waste s]}, waste = wasteRemain}
+    | not (null spadeFoundation) && canBuildFoundation (head $ waste s) (head spadeFoundation) = s{foundations = oldFoundations{spadesPile = head ( waste s):spadeFoundation}, waste = wasteRemain}
     | otherwise = s
   where
     spadeFoundation = spadesPile $ foundations s
-    wasteCard = head $ waste s
+    wasteRemain = wasteMinusOne $ waste s
     oldFoundations = foundations s
-    newFoundations = oldFoundations{spadesPile = [wasteCard]}
 
-wasteToDiamondsFoundation :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToDiamondsFoundation :: (HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToDiamondsFoundation s
     | null $ waste s = s
-    | not $ null diamondFoundation = s -- when there is someting on the pile we can't build with an Ace
-    | canBuildToEmptyDiamondFoundation wasteCard = s{foundations = newFoundations}
+    | canBuildToEmptyDiamondFoundation (head $ waste s) = s{foundations = oldFoundations{diamondsPile = [head $ waste s]}, waste = wasteRemain}
+    | not (null diamondFoundation) && canBuildFoundation (head $ waste s) (head diamondFoundation) = s{foundations = oldFoundations{diamondsPile = head ( waste s):diamondFoundation}, waste = wasteRemain}
     | otherwise = s
   where
     diamondFoundation = diamondsPile $ foundations s
-    wasteCard = head $ waste s
+    wasteRemain = wasteMinusOne $ waste s
     oldFoundations = foundations s
-    newFoundations = oldFoundations{diamondsPile = [wasteCard]}
 
-wasteToClubsFoundation :: (Eq c, HasCard c, Show c) => Solitaire c -> Solitaire c
+wasteToClubsFoundation :: (HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToClubsFoundation s
     | null $ waste s = s
-    | not $ null clubFoundation = s -- when there is someting on the pile we can't build with an Ace
-    | canBuildToEmptyClubFoundation wasteCard = s{foundations = newFoundations}
+    | canBuildToEmptyClubFoundation (head $ waste s) = s{foundations = oldFoundations{clubsPile = [head $ waste s]}, waste = wasteRemain}
+    | not (null clubFoundation) && canBuildFoundation (head $ waste s) (head clubFoundation) = s{foundations = oldFoundations{clubsPile = head ( waste s):clubFoundation}, waste = wasteRemain}
     | otherwise = s
   where
     clubFoundation = clubsPile $ foundations s
-    wasteCard = head $ waste s
+    wasteRemain = wasteMinusOne $ waste s
     oldFoundations = foundations s
-    newFoundations = oldFoundations{clubsPile = [wasteCard]}
 
 -- Helper to allow placing an Ace on empty foundation
 canBuildToEmptyHeartFoundation :: (HasCard c) => c -> Bool
