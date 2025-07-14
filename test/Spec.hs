@@ -295,3 +295,33 @@ main = hspec $ do
                         (Tableau [] [] [] [] [] [] [])
             let s' = wasteToHeartsFoundation s
             s' `shouldBe` s
+    describe "Solitaire State Transitions -- tableauToFoundation" $ do
+        it "Flips next card when it is down" $ do
+            let c3 = KlondikeCard (Card Three Hearts) Down
+            let c3' = KlondikeCard (Card Three Hearts) Up
+            let c2 = KlondikeCard (Card Two Hearts) Up
+            let c1 = KlondikeCard (Card Ace Hearts) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [] -- waste
+                        (Foundations [c1] [] [] [])
+                        (Tableau [c2, c3] [] [] [] [] [] [])
+            let s' = tableauOneToHeartFoundation s
+            head (heartsPile $ foundations s') `shouldBe` c2
+            head (one $ tableau s') `shouldBe` c3'
+        it "Does not flip next card when it is Up" $ do
+            let c3 = KlondikeCard (Card Three Clubs) Up
+            let c2 = KlondikeCard (Card Two Hearts) Up
+            let c1 = KlondikeCard (Card Ace Hearts) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [] -- waste
+                        (Foundations [c1] [] [] [])
+                        (Tableau [c2, c3] [] [] [] [] [] [])
+            let s' = tableauOneToHeartFoundation s
+            head (heartsPile $ foundations s') `shouldBe` c2
+            head (one $ tableau s') `shouldBe` c3
+
+
