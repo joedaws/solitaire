@@ -246,12 +246,15 @@ stockToWaste' s = newSolitaire
     newWaste = flipCard c : waste s
     newSolitaire = s{stock = newStock, waste = newWaste}
 
+turnDown :: (HasFace c) => Stock c -> Stock c
+turnDown = map flipCard
+
 {- | Helper transition function.
   Moves the cards in the waste to the stock and emtpies waste
 -}
-refreshStock :: (Eq c, Show c) => Solitaire c -> Solitaire c
+refreshStock :: (HasFace c) => Solitaire c -> Solitaire c
 refreshStock s
-    | null $ stock s = s{stock = reverse $ waste s, waste = []}
+    | null $ stock s = s{stock = turnDown $ reverse $ waste s, waste = []}
     | otherwise = s
 
 wasteToTableauOne :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
@@ -1163,10 +1166,16 @@ tableauSevenToClubFoundation s
 -- The first Int is the tableau to move a card from, i.e. 1--7
 -- The second Int is the tableau to move to, i.e. 1--7 that is different than this one
 -- The third Int is the number of cards to move, i.e. 1--12
--- There are 504 such functions
 -- ---------------------------
 
-tableauToTableau :: (Eq c, HasCard c, HasFace c, Show c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
+getNewFromBuildPile' :: (HasFace c) => BuildPile c -> BuildPile c
+getNewFromBuildPile' bp
+    | null bp = bp
+    | otherwise = case toFace $ head bp of 
+        Up -> bp
+        Down -> flipTop bp
+
+tableauToTableau :: (HasCard c, HasFace c, IsPlayable c) => Int -> Int -> Int -> Solitaire c -> Solitaire c
 tableauToTableau fromIdx toIdx numCards (Solitaire s' w f t)
     | tableauIsEmpty fromIdx t = Solitaire s' w f t
     | length (faceUpCards fromBuildPile) < numCards = Solitaire s' w f t
@@ -1178,7 +1187,7 @@ tableauToTableau fromIdx toIdx numCards (Solitaire s' w f t)
     fromBuildPile = getBuildPile fromIdx t
     toBuildPile = getBuildPile toIdx t
     (cardsToMove, newFromBuildPile) = splitAt numCards fromBuildPile
-    newFromBuildPile' = flipTop newFromBuildPile
+    newFromBuildPile' = getNewFromBuildPile' newFromBuildPile
     fromCard = last cardsToMove
     toCard' = head toBuildPile -- use ' to avoid clash with toCard from HasCard
     updatedToPile = cardsToMove ++ toBuildPile
