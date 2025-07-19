@@ -257,9 +257,16 @@ refreshStock s
     | null $ stock s = s{stock = turnDown $ reverse $ waste s, waste = []}
     | otherwise = s
 
-wasteToTableauOne :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
+wasteHasKing :: (HasCard c) => Waste c -> Bool
+wasteHasKing w
+    | null w = False
+    | rank (toCard $ head w) == King = True
+    | otherwise = False
+
+wasteToTableauOne :: (HasCard c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauOne s
     | null $ waste s = s
+    | wasteHasKing (waste s) && null firstTableau = s{waste = wasteMinusOne (waste s), tableau = initTableau{one = head (waste s) : firstTableau}}
     | null firstTableau = s
     | canBuild (head $ waste s) (head firstTableau) = s{waste = wasteMinusOne (waste s), tableau = initTableau{one = (head $ waste s) : firstTableau}}
     | otherwise = s
@@ -270,6 +277,7 @@ wasteToTableauOne s
 wasteToTableauTwo :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauTwo s
     | null $ waste s = s
+    | wasteHasKing (waste s) && null secondTableau = s{waste = wasteMinusOne (waste s), tableau = initTableau{two = head (waste s) : secondTableau}}
     | null secondTableau = s
     | canBuild (head $ waste s) (head secondTableau) = s{waste = wasteMinusOne (waste s), tableau = initTableau{two = (head $ waste s) : secondTableau}}
     | otherwise = s
@@ -280,6 +288,7 @@ wasteToTableauTwo s
 wasteToTableauThree :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauThree s
     | null $ waste s = s
+    | wasteHasKing (waste s) && null newTableau = s{waste = wasteMinusOne (waste s), tableau = initTableau{three = head (waste s) : newTableau}}
     | null newTableau = s
     | canBuild (head $ waste s) (head newTableau) = s{waste = wasteMinusOne (waste s), tableau = initTableau{three = (head $ waste s) : newTableau}}
     | otherwise = s
@@ -290,6 +299,7 @@ wasteToTableauThree s
 wasteToTableauFour :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauFour s
     | null $ waste s = s
+    | wasteHasKing (waste s) && null newTableau = s{waste = wasteMinusOne (waste s), tableau = initTableau{four = head (waste s) : newTableau}}
     | null newTableau = s
     | canBuild (head $ waste s) (head newTableau) = s{waste = wasteMinusOne (waste s), tableau = initTableau{four = (head $ waste s) : newTableau}}
     | otherwise = s
@@ -300,6 +310,7 @@ wasteToTableauFour s
 wasteToTableauFive :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauFive s
     | null $ waste s = s
+    | wasteHasKing (waste s) && null newTableau = s{waste = wasteMinusOne (waste s), tableau = initTableau{five = head (waste s) : newTableau}}
     | null newTableau = s
     | canBuild (head $ waste s) (head newTableau) = s{waste = wasteMinusOne (waste s), tableau = initTableau{five = (head $ waste s) : newTableau}}
     | otherwise = s
@@ -310,6 +321,7 @@ wasteToTableauFive s
 wasteToTableauSix :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauSix s
     | null $ waste s = s
+    | wasteHasKing (waste s) && null newTableau = s{waste = wasteMinusOne (waste s), tableau = initTableau{six = head (waste s) : newTableau}}
     | null newTableau = s
     | canBuild (head $ waste s) (head newTableau) = s{waste = wasteMinusOne (waste s), tableau = initTableau{six = (head $ waste s) : newTableau}}
     | otherwise = s
@@ -320,6 +332,7 @@ wasteToTableauSix s
 wasteToTableauSeven :: (Eq c, HasCard c, Show c, IsPlayable c) => Solitaire c -> Solitaire c
 wasteToTableauSeven s
     | null $ waste s = s
+    | wasteHasKing (waste s) && null newTableau = s{waste = wasteMinusOne (waste s), tableau = initTableau{seven = head (waste s) : newTableau}}
     | null newTableau = s
     | canBuild (head $ waste s) (head newTableau) = s{waste = wasteMinusOne (waste s), tableau = initTableau{seven = (head $ waste s) : newTableau}}
     | otherwise = s
@@ -1171,7 +1184,7 @@ tableauSevenToClubFoundation s
 getNewFromBuildPile' :: (HasFace c) => BuildPile c -> BuildPile c
 getNewFromBuildPile' bp
     | null bp = bp
-    | otherwise = case toFace $ head bp of 
+    | otherwise = case toFace $ head bp of
         Up -> bp
         Down -> flipTop bp
 

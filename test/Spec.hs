@@ -98,7 +98,7 @@ main = hspec $ do
                         [c1] -- waste
                         (Foundations [] [] [] [])
                         (Tableau [c1] [] [] [c1] [] [] [])
-            let s' = tableauToTableau 2 3 1 s -- move one card from t2 to t3 
+            let s' = tableauToTableau 2 3 1 s -- move one card from t2 to t3
             s' `shouldBe` s -- no state change expected
         it "does nothing when more cards are moved than in tableau" $ do
             let c1 = KlondikeCard (Card Ten Diamonds) Down
@@ -146,7 +146,7 @@ main = hspec $ do
                         [c1] -- waste
                         (Foundations [] [] [] [])
                         (Tableau [] [] [] [c2, c1] [] [] [c3])
-            let s' = tableauToTableau 4 7 8 s 
+            let s' = tableauToTableau 4 7 8 s
             s' `shouldBe` s
         it "does not move non-King card to empty tableau" $ do
             let c1 = KlondikeCard (Card Queen Hearts) Up
@@ -167,8 +167,8 @@ main = hspec $ do
                         (Foundations [] [] [] [])
                         (Tableau [c1] [] [] [] [] [] []) -- t1 has King, t2 empty
             let s' = tableauToTableau 1 2 1 s
-            one (tableau s') `shouldBe` []         -- from pile is now empty
-            two (tableau s') `shouldBe` [c1]       -- King moved to empty t2
+            one (tableau s') `shouldBe` [] -- from pile is now empty
+            two (tableau s') `shouldBe` [c1] -- King moved to empty t2
     describe "Solitaire State Transitions -- wasteToFoundation" $ do
         it "does nothing when waste is empty" $ do
             let c1 = KlondikeCard (Card Five Spades) Down
@@ -237,9 +237,9 @@ main = hspec $ do
                         (Foundations [c1] [] [] [c2])
                         (Tableau [c3] [] [] [] [c4] [] [])
             let sHeart = tableauOneToHeartFoundation s
-            head (heartsPile $ foundations sHeart)`shouldBe` c3
+            head (heartsPile $ foundations sHeart) `shouldBe` c3
             let sSpade = tableauFiveToSpadeFoundation s
-            head (spadesPile $ foundations sSpade)`shouldBe` c4
+            head (spadesPile $ foundations sSpade) `shouldBe` c4
         it "does nothing when card can't be played" $ do
             let c1 = KlondikeCard (Card Ace Hearts) Up
             let c2 = KlondikeCard (Card Three Hearts) Up
@@ -323,5 +323,15 @@ main = hspec $ do
             let s' = tableauOneToHeartFoundation s
             head (heartsPile $ foundations s') `shouldBe` c2
             head (one $ tableau s') `shouldBe` c3
-
-
+    describe "Solitaire State Transitions -- wasteToTableau" $ do
+        it "Moves King to empty tableau" $ do
+            let c1 = KlondikeCard (Card King Hearts) Up
+            let s =
+                    Solitaire
+                        [] -- stock
+                        [c1] -- waste
+                        (Foundations [] [] [] [])
+                        (Tableau [] [] [] [] [] [] [])
+            let s' = wasteToTableauOne s
+            head (one $ tableau s') `shouldBe` c1
+            waste s' `shouldBe` []
